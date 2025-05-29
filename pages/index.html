@@ -5,72 +5,59 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>FoodStudent - Vouchers & Discounts</title>
   <style>
-    /* ====== Base Dark Theme ====== */
     body {
       margin: 0;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background-color: #121212;
       color: #eee;
-      min-height: 100vh;
       display: flex;
       flex-direction: column;
+      min-height: 100vh;
     }
 
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    /* ====== Navbar ====== */
-    nav {
-      background-color: #1f1f1f;
-      padding: 1rem 2rem;
+    .container {
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.8);
-      user-select: none;
+      justify-content: center;
+      flex: 1;
+      margin: 0 100px;
     }
 
-    .nav-brand {
-      font-size: 1.8rem;
-      font-weight: 700;
-      color: #ff5722;
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 1.5rem;
-    }
-
-    .nav-links a {
-      font-weight: 600;
-      padding: 0.4rem 0.8rem;
-      border-radius: 6px;
-      transition: background-color 0.3s ease;
-    }
-
-    .nav-links a:hover {
-      background-color: #ff5722;
-      color: #fff;
-    }
-
-    /* ====== Main Content ====== */
     main {
-      flex: 1 0 auto;
-      padding: 2rem 1rem;
+      flex: 1;
       max-width: 1000px;
-      margin: 0 auto;
       width: 100%;
-      box-sizing: border-box;
+      padding: 2rem 1rem;
+    }
+
+    .promo-scroll {
+      overflow: hidden;
+      white-space: nowrap;
+      margin-bottom: 2rem;
+      border-radius: 12px;
+      border: 1px solid #444;
+    }
+
+    .promo-inner {
+      display: inline-block;
+      animation: scrollPromo 24s linear infinite;
+    }
+
+    .promo-inner img {
+      height: 200px;
+      margin-right: 1rem;
+      border-radius: 12px;
+    }
+
+    @keyframes scrollPromo {
+      0% { transform: translateX(0%); }
+      100% { transform: translateX(-50%); }
     }
 
     .welcome-msg {
       text-align: center;
       font-size: 1.4rem;
-      margin-bottom: 3rem;
+      margin-bottom: 2rem;
       color: #ff8a50;
-      user-select: none;
     }
 
     .voucher-grid {
@@ -84,13 +71,9 @@
       border-radius: 16px;
       padding: 1.5rem;
       box-shadow: 0 6px 12px rgb(255 87 34 / 0.5);
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
       color: #fff;
-      cursor: pointer;
       transition: transform 0.3s ease, box-shadow 0.3s ease;
-      user-select: none;
+      cursor: pointer;
     }
 
     .voucher-card:hover {
@@ -102,191 +85,173 @@
       font-size: 1.4rem;
       font-weight: 700;
       margin-bottom: 0.5rem;
-      text-shadow: 1px 1px 3px rgba(0,0,0,0.4);
     }
 
     .voucher-desc {
       font-size: 1rem;
       margin-bottom: 1rem;
-      text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
-      flex-grow: 1;
     }
 
     .voucher-code {
       background: rgba(255, 255, 255, 0.2);
-      padding: 0.3rem 0.6rem;
+      padding: 0.4rem;
       border-radius: 12px;
-      font-weight: 700;
-      letter-spacing: 2px;
       text-align: center;
-      margin-bottom: 1rem;
-      user-select: text;
       font-family: monospace;
       font-size: 1.1rem;
-      text-shadow: 1px 1px 2px rgba(0,0,0,0.6);
+      margin-bottom: 1rem;
     }
 
     .claim-btn {
       background-color: #fff;
       color: #ff5722;
       border: none;
-      padding: 0.6rem 1.5rem;
+      padding: 0.6rem 1.2rem;
       font-weight: 700;
       font-size: 1rem;
       border-radius: 50px;
       cursor: pointer;
-      align-self: center;
-      transition: background-color 0.3s ease, color 0.3s ease;
-      box-shadow: 0 3px 8px rgb(255 87 34 / 0.6);
-      user-select: none;
+      transition: background-color 0.3s ease;
     }
 
     .claim-btn:hover {
       background-color: #ff5722;
       color: #fff;
-      box-shadow: 0 6px 14px rgb(255 87 34 / 0.9);
     }
 
-    /* ====== Footer ====== */
     footer {
       background-color: #1f1f1f;
       text-align: center;
-      padding: 1.2rem 1rem;
-      font-size: 0.9rem;
+      padding: 1rem;
       color: #777;
-      user-select: none;
-      flex-shrink: 0;
-      box-shadow: inset 0 1px 3px rgba(255, 87, 34, 0.2);
+      font-size: 0.9rem;
     }
 
     footer a {
       color: #ff5722;
       text-decoration: none;
-      font-weight: 600;
     }
 
     footer a:hover {
       text-decoration: underline;
     }
 
-    /* ====== Responsive ====== */
-    @media (max-width: 600px) {
-      nav {
-        flex-direction: column;
-        gap: 0.8rem;
+    @media (max-width: 768px) {
+      .container {
+        margin: 0 10px;
       }
 
-      .nav-links {
-        gap: 1rem;
+      .promo-inner img {
+        height: 140px;
       }
+    }
 
-      main {
-        padding: 1rem;
-      }
-
-      .voucher-grid {
-        grid-template-columns: 1fr;
-      }
+    /* Highlight active nav link */
+    .active {
+      color: #ff8a50;
+      font-weight: bold;
+      text-decoration: underline;
     }
   </style>
 </head>
 <body>
 
-  <nav>
-    <div class="nav-brand">FoodStudent</div>
-    <div class="nav-links">
-      <a href="index.html" aria-current="page">Home</a>
-      <a href="menu.html">Menu</a>
-      <a href="orders.html">Orders</a>
-      <a href="profile.html">Profile</a>
-      <a href="login.html">Logout</a>
-    </div>
-  </nav>
+<!-- Navbar container -->
+<div id="navbar-container"></div>
 
-  <main>
-    <div class="welcome-msg" id="welcome-msg">Welcome, User! Claim your vouchers below:</div>
+<script>
+  // Load navbar from external file
+  fetch('../components/navbar.html')
+    .then(res => res.text())
+    .then(data => {
+      document.getElementById('navbar-container').innerHTML = data;
 
-    <div class="voucher-grid" id="voucher-grid">
-      <!-- Voucher cards inserted by JS -->
-    </div>
-  </main>
-
-  <footer>
-    &copy; 2025 FoodStudent &nbsp;|&nbsp; 
-    <a href="terms.html">Terms of Service</a> &nbsp;|&nbsp; 
-    <a href="privacy.html">Privacy Policy</a>
-  </footer>
-
-  <script>
-    // Simulated logged-in user name
-    const userName = "Alex";
-
-    // Voucher data array
-    const vouchers = [
-      {
-        title: "10% Off on Your Next Order",
-        description: "Use this voucher to get 10% discount on your entire next order.",
-        code: "SAVE10"
-      },
-      {
-        title: "Free Delivery",
-        description: "Enjoy free delivery on orders above $15 with this voucher.",
-        code: "FREEDEL"
-      },
-      {
-        title: "$5 Off on Orders $25+",
-        description: "Get $5 off when you spend $25 or more.",
-        code: "FIVEOFF25"
-      },
-      {
-        title: "Buy 1 Get 1 Free",
-        description: "Order any burger and get another one free.",
-        code: "B1G1BURGER"
-      },
-      {
-        title: "15% Student Discount",
-        description: "Exclusive 15% discount for students on all menu items.",
-        code: "STUDENT15"
-      },
-      {
-        title: "Free Dessert",
-        description: "Claim a free dessert with any main meal.",
-        code: "FREEDESSERT"
-      },
-    ];
-
-    // Update welcome message with user name
-    document.getElementById("welcome-msg").textContent = `Welcome, ${userName}! Claim your vouchers below:`;
-
-    // Reference voucher grid container
-    const voucherGrid = document.getElementById("voucher-grid");
-
-    // Create and insert voucher cards
-    vouchers.forEach(voucher => {
-      const card = document.createElement("div");
-      card.className = "voucher-card";
-
-      card.innerHTML = `
-        <div class="voucher-title">${voucher.title}</div>
-        <div class="voucher-desc">${voucher.description}</div>
-        <div class="voucher-code">${voucher.code}</div>
-        <button class="claim-btn">Claim</button>
-      `;
-
-      const claimBtn = card.querySelector(".claim-btn");
-      claimBtn.addEventListener("click", () => {
-        alert(`Voucher "${voucher.code}" claimed! Enjoy your discount!`);
-        claimBtn.textContent = "Claimed ✓";
-        claimBtn.disabled = true;
-        claimBtn.style.cursor = "default";
-        claimBtn.style.backgroundColor = "#4caf50";
-        claimBtn.style.color = "#fff";
-        claimBtn.style.boxShadow = "none";
+      // Highlight active link after navbar loads
+      const currentPath = window.location.pathname.split("/").pop();
+      const links = document.querySelectorAll('#navbar-container a');
+      links.forEach(link => {
+        if (link.getAttribute('href') === currentPath) {
+          link.classList.add('active');
+        }
       });
 
-      voucherGrid.appendChild(card);
+      // Login/logout logic
+      const isLoggedIn = localStorage.getItem('loggedIn') === 'true';
+      const authLink = document.createElement('a');
+
+      if (isLoggedIn) {
+        authLink.href = "#";
+        authLink.textContent = "Log Out";
+        authLink.onclick = () => {
+          localStorage.setItem('loggedIn', 'false');
+          alert('You have logged out.');
+          location.reload();
+        };
+      } else {
+        authLink.href = "login.html";
+        authLink.textContent = "Log In";
+      }
+
+      document.querySelector('#navbar-container .nav-links').appendChild(authLink);
     });
-  </script>
+</script>
+
+<div class="container">
+  <main>
+    <div class="promo-scroll">
+      <div class="promo-inner">
+        <img src="https://images.unsplash.com/photo-1586190848861-99aa4a171e90?auto=format&fit=crop&w=400&q=80" alt="Promo1" />
+        <img src="https://images.unsplash.com/photo-1600891963932-b89c1eaeeecf?auto=format&fit=crop&w=400&q=80" alt="Promo2" />
+        <img src="https://images.unsplash.com/photo-1613145996361-4782b3fdfb0c?auto=format&fit=crop&w=400&q=80" alt="Promo3" />
+        <img src="https://images.unsplash.com/photo-1607746882042-944635dfe10e?auto=format&fit=crop&w=400&q=80" alt="Promo4" />
+      </div>
+    </div>
+
+    <div class="welcome-msg">Welcome, Alex! Claim your vouchers below:</div>
+
+    <div class="voucher-grid" id="voucher-grid">
+      <!-- Voucher cards will be inserted by JS -->
+    </div>
+  </main>
+</div>
+
+<footer>
+  &copy; 2025 FoodStudent &nbsp;|&nbsp; 
+  <a href="terms.html">Terms</a> &nbsp;|&nbsp;
+  <a href="privacy.html">Privacy</a>
+</footer>
+
+<script>
+  const vouchers = [
+    { title: "10% Off on Next Order", description: "Use this voucher to get 10% discount.", code: "SAVE10" },
+    { title: "Free Delivery", description: "Enjoy free delivery on orders above $15.", code: "FREEDEL" },
+    { title: "$5 Off Orders $25+", description: "Spend $25 or more, get $5 off.", code: "FIVEOFF25" },
+    { title: "Buy 1 Get 1 Free", description: "Buy any burger, get another one free.", code: "B1G1" },
+    { title: "Student Discount", description: "Exclusive 15% off for students.", code: "STUDENT15" },
+    { title: "Free Dessert", description: "Get a free dessert with any meal.", code: "SWEET" },
+  ];
+
+  const container = document.getElementById('voucher-grid');
+  vouchers.forEach(v => {
+    const div = document.createElement('div');
+    div.className = "voucher-card";
+    div.innerHTML = `
+      <div class="voucher-title">${v.title}</div>
+      <div class="voucher-desc">${v.description}</div>
+      <div class="voucher-code">${v.code}</div>
+      <button class="claim-btn">Claim</button>
+    `;
+    div.querySelector(".claim-btn").addEventListener("click", e => {
+      alert(`Voucher "${v.code}" claimed!`);
+      e.target.textContent = "Claimed ✓";
+      e.target.disabled = true;
+      e.target.style.backgroundColor = "#4caf50";
+      e.target.style.color = "#fff";
+      e.target.style.cursor = "default";
+    });
+    container.appendChild(div);
+  });
+</script>
 
 </body>
 </html>

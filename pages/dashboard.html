@@ -147,6 +147,73 @@
       color: #e64a19;
     }
 
+    /* Stats Summary */
+    .stats-container {
+      display: flex;
+      justify-content: space-around;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+    }
+
+    .stat-card {
+      background-color: #2a2a2a;
+      border-radius: 10px;
+      padding: 1rem 1.5rem;
+      flex: 1 1 160px;
+      display: flex;
+      align-items: center;
+      box-shadow: 0 0 10px #111;
+      transition: transform 0.2s ease;
+      cursor: default;
+      user-select: none;
+    }
+
+    .stat-card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 15px #ff5722;
+    }
+
+    .stat-icon {
+      font-size: 2.8rem;
+      margin-right: 1rem;
+      user-select: none;
+    }
+
+    .stat-info {
+      text-align: left;
+    }
+
+    .stat-number {
+      font-size: 1.9rem;
+      font-weight: 700;
+      color: #ff5722;
+      user-select: none;
+    }
+
+    .stat-label {
+      font-size: 0.9rem;
+      color: #bbb;
+      user-select: none;
+    }
+
+    /* Different stat card colors */
+    .stat-total .stat-number {
+      color: #ff9800;
+    }
+
+    .stat-pending .stat-number {
+      color: #ffb300;
+    }
+
+    .stat-delivered .stat-number {
+      color: #4caf50;
+    }
+
+    .stat-cancelled .stat-number {
+      color: #f44336;
+    }
+
     /* Responsive */
     @media (max-width: 480px) {
       .quick-links {
@@ -156,6 +223,15 @@
       .quick-btn {
         width: 100%;
         padding: 1rem;
+      }
+
+      .stats-container {
+        flex-direction: column;
+      }
+
+      .stat-card {
+        flex: 1 1 100%;
+        margin-bottom: 1rem;
       }
     }
   </style>
@@ -168,6 +244,40 @@
 
   <main>
     <div class="welcome" id="welcome-msg">Welcome back, User!</div>
+
+    <section>
+      <h2>Order Summary</h2>
+      <div class="stats-container">
+        <div class="stat-card stat-total">
+          <div class="stat-icon">📦</div>
+          <div class="stat-info">
+            <div class="stat-number" id="total-orders">0</div>
+            <div class="stat-label">Total Orders</div>
+          </div>
+        </div>
+        <div class="stat-card stat-pending">
+          <div class="stat-icon">⏳</div>
+          <div class="stat-info">
+            <div class="stat-number" id="pending-orders">0</div>
+            <div class="stat-label">Pending</div>
+          </div>
+        </div>
+        <div class="stat-card stat-delivered">
+          <div class="stat-icon">✅</div>
+          <div class="stat-info">
+            <div class="stat-number" id="delivered-orders">0</div>
+            <div class="stat-label">Delivered</div>
+          </div>
+        </div>
+        <div class="stat-card stat-cancelled">
+          <div class="stat-icon">❌</div>
+          <div class="stat-info">
+            <div class="stat-number" id="cancelled-orders">0</div>
+            <div class="stat-label">Cancelled</div>
+          </div>
+        </div>
+      </div>
+    </section>
 
     <section>
       <h2>Recent Orders</h2>
@@ -227,9 +337,21 @@
       ordersList.appendChild(li);
     });
 
-    // Close button event to redirect to index.html
+    // Calculate order stats
+    const totalOrders = recentOrders.length;
+    const pendingOrders = recentOrders.filter(o => o.status.toLowerCase() === 'pending').length;
+    const deliveredOrders = recentOrders.filter(o => o.status.toLowerCase() === 'delivered').length;
+    const cancelledOrders = recentOrders.filter(o => o.status.toLowerCase() === 'cancelled').length;
+
+    // Update stats UI
+    document.getElementById('total-orders').textContent = totalOrders;
+    document.getElementById('pending-orders').textContent = pendingOrders;
+    document.getElementById('delivered-orders').textContent = deliveredOrders;
+    document.getElementById('cancelled-orders').textContent = cancelledOrders;
+
+    // Close button event to redirect to menu.html
     document.getElementById('close-btn').addEventListener('click', () => {
-      window.location.href = 'menu.html';S
+      window.location.href = 'menu.html';
     });
   </script>
 

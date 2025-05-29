@@ -1,10 +1,79 @@
+<!-- navbar.html -->
 <nav class="navbar">
   <div class="logo">FoodStudent</div>
-  <ul>
-    <li><a href="index.html">Home</a></li>
-    <li><a href="menu.html">Menu</a></li>
-    <li><a href="orders.html">Orders</a></li>
-    <li><a href="profile.html">Profile</a></li>
-    <li><a href="index.html">Logout</a></li>
-  </ul>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="menu.html">Menu</a>
+    <a href="orders.html">Orders</a>
+    <a href="profile.html">Profile</a>
+  </div>
 </nav>
+
+
+<style>
+  .navbar {
+    background-color: #1f1f1f;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.8);
+  }
+
+  .logo {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #ff5722;
+  }
+
+  .nav-links {
+    list-style: none;
+    display: flex;
+    gap: 1.2rem;
+    margin: 0;
+    padding: 0;
+  }
+
+  .nav-links a {
+    color: #eee;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+    padding-bottom: 4px;
+  }
+
+  .nav-links a:hover {
+    color: #ff5722;
+  }
+
+  .nav-links a.active {
+    color: #ff5722;
+    border-bottom: 2px solid #ff5722;
+  }
+</style>
+
+<script>
+  // Set active link
+  const currentPage = window.location.pathname.split('/').pop();
+  document.querySelectorAll('.nav-links a').forEach(link => {
+    if (link.getAttribute('href') === currentPage) {
+      link.classList.add('active');
+    }
+  });
+
+  // Handle login/logout toggle
+  const authLink = document.getElementById('auth-link');
+  const isLoggedIn = localStorage.getItem('loggedIn') === 'true';
+
+  if (isLoggedIn) {
+    authLink.textContent = 'Log Out';
+    authLink.onclick = () => {
+      localStorage.setItem('loggedIn', 'false');
+      alert('You have logged out.');
+      location.reload();
+    };
+  } else {
+    authLink.href = 'login.html';
+    authLink.textContent = 'LogIn';
+  }
+</script>

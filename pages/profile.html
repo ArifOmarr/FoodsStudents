@@ -5,113 +5,227 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Profile - FoodStudent</title>
   <script src="https://unpkg.com/vue@3"></script>
-  <link rel="stylesheet" href="../css/style.css" />
   <style>
+    /* Base Dark Theme */
     body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background-color: #121212;
       color: #eee;
-      font-family: 'Roboto', sans-serif;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      margin: 0;
     }
 
+    /* Navbar */
+    nav {
+      background-color: #1f1f1f;
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.8);
+      user-select: none;
+      flex-shrink: 0;
+    }
+
+    .nav-brand {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #ff5722;
+      letter-spacing: 1.5px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .nav-links a {
+      font-weight: 600;
+      padding: 0.4rem 1rem;
+      border-radius: 6px;
+      transition: background-color 0.3s ease;
+      color: inherit;
+      text-decoration: none;
+      user-select: none;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      background-color: #ff5722;
+      color: #fff;
+    }
+
+    /* Container */
     .container {
-      max-width: 600px;
+      flex: 1 0 auto;
+      max-width: 480px;
       margin: 3rem auto 4rem;
       padding: 0 1rem;
-      flex: 1 0 auto;
       user-select: text;
     }
 
     h2 {
       text-align: center;
-      margin-bottom: 2rem;
+      margin-bottom: 2.5rem;
       color: #ff5722;
       user-select: none;
+      font-weight: 700;
+      font-size: 2rem;
+      letter-spacing: 0.03em;
+      text-shadow: 0 0 4px #ff5722aa;
     }
 
+    /* Profile Info Card */
     .profile-info {
       background-color: #1e1e1e;
-      padding: 2rem;
-      border-radius: 12px;
-      box-shadow: 0 4px 15px rgb(255 87 34 / 0.3);
-    }
-
-    .profile-info label {
-      display: block;
-      margin-top: 1.5rem;
-      margin-bottom: 0.5rem;
-      font-weight: 700;
+      padding: 2.5rem 2rem;
+      border-radius: 14px;
+      box-shadow: 0 6px 20px rgb(255 87 34 / 0.25);
+      display: flex;
+      flex-direction: column;
+      gap: 1.4rem;
       user-select: none;
+    }
+
+    label {
+      font-weight: 700;
       color: #ff5722;
-    }
-
-    .profile-info input {
-      width: 100%;
-      padding: 12px;
-      background-color: #2a2a2a;
-      border: 1px solid #444;
-      color: #eee;
-      border-radius: 6px;
+      user-select: none;
+      letter-spacing: 0.02em;
       font-size: 1rem;
-      user-select: text;
-      transition: border-color 0.3s ease;
     }
 
-    .profile-info input:focus {
+    input {
+      width: 100%;
+      padding: 14px 16px;
+      background-color: #2a2a2a;
+      border: 1.5px solid #444;
+      color: #eee;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      font-weight: 500;
+      user-select: text;
+      transition: border-color 0.3s ease, background-color 0.3s ease;
+      font-family: inherit;
+    }
+
+    input::placeholder {
+      color: #888;
+      user-select: none;
+    }
+
+    input:focus {
       border-color: #ff6b00;
       outline: none;
       background-color: #3a3a3a;
+      box-shadow: 0 0 6px #ff6b0044;
     }
 
+    /* Save Button */
     .btn {
-      background-color: #ff6b00;
+      margin-top: 2.8rem;
+      background: linear-gradient(135deg, #ff6b00, #ff5722);
       color: #fff;
       border: none;
-      padding: 14px 22px;
-      border-radius: 8px;
+      padding: 16px 0;
+      border-radius: 10px;
       cursor: pointer;
-      margin-top: 2rem;
       font-weight: 700;
-      font-size: 1.1rem;
-      width: 100%;
-      transition: background-color 0.3s ease;
+      font-size: 1.25rem;
       user-select: none;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 5px 15px rgb(255 87 34 / 0.5);
+      transition: background 0.4s ease, transform 0.15s ease;
+      letter-spacing: 0.03em;
     }
 
     .btn:hover {
-      background-color: #e05d00;
+      background: linear-gradient(135deg, #e05d00, #d84315);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgb(224 93 0 / 0.7);
     }
 
-    /* Navbar and footer placeholders styling if needed */
-    #navbar, #footer {
+    .btn:active {
+      transform: translateY(0);
+      box-shadow: 0 4px 12px rgb(224 93 0 / 0.7);
+    }
+
+    /* Button icon */
+    .btn svg {
+      width: 22px;
+      height: 22px;
+      fill: white;
+      user-select: none;
+    }
+
+    /* Footer */
+    footer {
       flex-shrink: 0;
+      background-color: #1f1f1f;
+      color: #bbb;
+      padding: 1rem 2rem;
+      text-align: center;
+      font-size: 0.9rem;
+      border-top: 1px solid #333;
+      user-select: none;
+      font-weight: 500;
+    }
+
+    /* Responsive */
+    @media (max-width: 480px) {
+      .container {
+        max-width: 95vw;
+        margin: 2rem auto 3rem;
+        padding: 0 1rem;
+      }
+
+      h2 {
+        font-size: 1.6rem;
+        margin-bottom: 2rem;
+      }
     }
   </style>
 </head>
 <body>
 
-  <div id="navbar"></div>
+  <nav>
+    <div class="nav-brand" aria-label="FoodStudent Home">FoodStudent</div>
+    <div class="nav-links" role="navigation" aria-label="Main Navigation">
+      <a href="index.html" tabindex="0">Home</a>
+      <a href="menu.html" tabindex="0">Menu</a>
+      <a href="orders.html" tabindex="0">Orders</a>
+      <a href="profile.html" class="active" aria-current="page" tabindex="0">Profile</a>
+      <a href="login.html" tabindex="0">Login</a>
+    </div>
+  </nav>
 
-  <div id="app" class="container">
-    <h2>Your Profile</h2>
-    <div class="profile-info">
+  <div id="app" class="container" role="main" aria-labelledby="profile-title">
+    <h2 id="profile-title">Your Profile</h2>
+    <form class="profile-info" @submit.prevent="saveProfile" novalidate>
       <label for="name">Name:</label>
-      <input id="name" type="text" v-model="user.name" />
+      <input id="name" type="text" v-model.trim="user.name" placeholder="Enter your full name" autocomplete="name" required />
 
       <label for="email">Email:</label>
-      <input id="email" type="email" v-model="user.email" />
+      <input id="email" type="email" v-model.trim="user.email" placeholder="example@domain.com" autocomplete="email" required />
 
       <label for="location">Location:</label>
-      <input id="location" type="text" v-model="user.location" />
+      <input id="location" type="text" v-model.trim="user.location" placeholder="Your location or dorm" autocomplete="off" />
 
-      <button class="btn" @click="saveProfile">Save Profile</button>
-    </div>
+      <button type="submit" class="btn" aria-label="Save Profile">
+        <svg aria-hidden="true" viewBox="0 0 24 24" focusable="false"><path d="M5 13l4 4L19 7"/></svg>
+        Save Profile
+      </button>
+    </form>
   </div>
 
-  <div id="footer"></div>
+  <footer>
+    &copy; 2025 FoodStudent. All rights reserved.
+  </footer>
 
   <script>
     const app = Vue.createApp({
@@ -126,20 +240,18 @@
       },
       methods: {
         saveProfile() {
-          alert('Profile saved! (Note: This only updates locally for now.)');
+          // Basic validation
+          if (!this.user.name || !this.user.email) {
+            alert('Please fill in your name and a valid email.');
+            return;
+          }
+          // Simulate saving profile
+          alert(`Profile saved!\nName: ${this.user.name}\nEmail: ${this.user.email}\nLocation: ${this.user.location || 'N/A'}`);
         }
       }
     });
 
     app.mount('#app');
-
-    fetch('../components/navbar.html')
-      .then(res => res.text())
-      .then(data => document.getElementById('navbar').innerHTML = data);
-
-    fetch('../components/footer.html')
-      .then(res => res.text())
-      .then(data => document.getElementById('footer').innerHTML = data);
   </script>
 
 </body>
