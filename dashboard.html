@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard | FoodStudent</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body class="dashboard-body">
+  <div class="sidebar">
+    <div class="sidebar-header">
+      <img src="assets/images/logo.png" alt="FoodStudent" class="sidebar-logo" />
+      <h1>FoodStudent</h1>
+    </div>
+    <ul class="nav">
+      <li class="nav-item active"><a href="dashboard.html">Home</a></li>
+      <li class="nav-item"><a href="menu.html">Menu</a></li>
+      <li class="nav-item"><a href="orders.html">Orders</a></li>
+      <li class="nav-item"><a href="profile.html">Profile</a></li>
+      <li class="nav-item"><a href="index.html">Logout</a></li>
+    </ul>
+  </div>
+
+  <div class="main-content">
+    <header class="dashboard-header">
+      <h2>Welcome back, <span class="username">Student</span>!</h2>
+    </header>
+
+    <section class="dashboard-cards">
+      <div class="card">
+        <h3>Browse Menu</h3>
+        <p>Explore meals and order your favourites.</p>
+        <a href="menu.html" class="card-link">View Menu →</a>
+      </div>
+      <div class="card">
+        <h3>Recent Orders</h3>
+        <p>Check your order status and history.</p>
+        <a href="orders.html" class="card-link">View Orders →</a>
+      </div>
+      <div class="card">
+        <h3>Update Profile</h3>
+        <p>Manage your account details and preferences.</p>
+        <a href="profile.html" class="card-link">Edit Profile →</a>
+      </div>
+    </section>
+  </div>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
