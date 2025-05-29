@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -24,7 +25,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.8);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.8);
       user-select: none;
       flex-shrink: 0;
     }
@@ -191,6 +192,7 @@
     }
   </style>
 </head>
+
 <body>
 
   <nav>
@@ -207,19 +209,29 @@
   <div id="app" class="container" role="main" aria-labelledby="profile-title">
     <h2 id="profile-title">Your Profile</h2>
     <form class="profile-info" @submit.prevent="saveProfile" novalidate>
-      <label for="name">Name:</label>
-      <input id="name" type="text" v-model.trim="user.name" placeholder="Enter your full name" autocomplete="name" required />
+      <div class="profile-info" style="margin-top: 3rem; align-items: center; text-align: center;">
+        <img src="https://via.placeholder.com/120" alt="Profile Picture"
+          style="border-radius: 50%; width: 120px; height: 120px; object-fit: cover; margin-bottom: 1rem;" />
+        <div style="font-size: 1.5rem; font-weight: bold; color: #fff;">Syafi Athar Aidan</div>
+        <div style="color: #bbb; margin: 0.5rem 0 1rem;">
+          Software Engineering student at Universiti Putra Malaysia. Passionate about technology, basketball, and making
+          a difference.
+        </div>
 
-      <label for="email">Email:</label>
-      <input id="email" type="email" v-model.trim="user.email" placeholder="example@domain.com" autocomplete="email" required />
+        <div style="color: #ccc; font-size: 0.95rem;">
+          <p>Email: syafi@example.com</p>
+          <p>Location: Jakarta, Indonesia</p>
+        </div>
 
-      <label for="location">Location:</label>
-      <input id="location" type="text" v-model.trim="user.location" placeholder="Your location or dorm" autocomplete="off" />
-
-      <button type="submit" class="btn" aria-label="Save Profile">
-        <svg aria-hidden="true" viewBox="0 0 24 24" focusable="false"><path d="M5 13l4 4L19 7"/></svg>
-        Save Profile
-      </button>
+        <div style="margin-top: 1rem; display: flex; justify-content: center; gap: 1rem;">
+          <a href="https://github.com/yourusername" target="_blank"
+            style="color: #ff5722; text-decoration: none;">GitHub</a>
+          <a href="https://linkedin.com/in/yourusername" target="_blank"
+            style="color: #ff5722; text-decoration: none;">LinkedIn</a>
+          <a href="https://twitter.com/yourusername" target="_blank"
+            style="color: #ff5722; text-decoration: none;">Twitter</a>
+        </div>
+      </div>
     </form>
   </div>
 
@@ -255,4 +267,5 @@
   </script>
 
 </body>
+
 </html>
