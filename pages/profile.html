@@ -209,29 +209,40 @@
   <div id="app" class="container" role="main" aria-labelledby="profile-title">
     <h2 id="profile-title">Your Profile</h2>
     <form class="profile-info" @submit.prevent="saveProfile" novalidate>
-      <div class="profile-info" style="margin-top: 3rem; align-items: center; text-align: center;">
-        <img src="https://via.placeholder.com/120" alt="Profile Picture"
-          style="border-radius: 50%; width: 120px; height: 120px; object-fit: cover; margin-bottom: 1rem;" />
-        <div style="font-size: 1.5rem; font-weight: bold; color: #fff;">Syafi Athar Aidan</div>
-        <div style="color: #bbb; margin: 0.5rem 0 1rem;">
-          Software Engineering student at Universiti Putra Malaysia. Passionate about technology, basketball, and making
-          a difference.
-        </div>
+      <!-- Profile Header -->
+<div class="profile-header" style="padding: 1.5rem 1rem;">
+  <h2 style="margin-bottom: 0.2rem;">Syafi Athar</h2>
+</div>
 
-        <div style="color: #ccc; font-size: 0.95rem;">
-          <p>Email: syafi@example.com</p>
-          <p>Location: Jakarta, Indonesia</p>
-        </div>
+<!-- Quick Action Buttons -->
+<div style="display: flex; justify-content: space-around; padding: 1rem 0;">
+  <div style="text-align: center;">
+    <i class="fas fa-receipt" style="font-size: 1.5rem; color: #ff2b85;"></i>
+    <div style="margin-top: 0.5rem;">Orders</div>
+  </div>
+  <div style="text-align: center;">
+    <i class="fas fa-heart" style="font-size: 1.5rem; color: #ff2b85;"></i>
+    <div style="margin-top: 0.5rem;">Favourites</div>
+  </div>
+  <div style="text-align: center;">
+    <i class="fas fa-map-marker-alt" style="font-size: 1.5rem; color: #ff2b85;"></i>
+    <div style="margin-top: 0.5rem;">Addresses</div>
+  </div>
+</div>
 
-        <div style="margin-top: 1rem; display: flex; justify-content: center; gap: 1rem;">
-          <a href="https://github.com/yourusername" target="_blank"
-            style="color: #ff5722; text-decoration: none;">GitHub</a>
-          <a href="https://linkedin.com/in/yourusername" target="_blank"
-            style="color: #ff5722; text-decoration: none;">LinkedIn</a>
-          <a href="https://twitter.com/yourusername" target="_blank"
-            style="color: #ff5722; text-decoration: none;">Twitter</a>
-        </div>
-      </div>
+<!-- Perks Section (Cleaned) -->
+<div style="padding: 1rem;">
+  <h3>Perks for you</h3>
+  <ul style="list-style: none; padding: 0;">
+    <li style="padding: 0.75rem 0; border-bottom: 1px solid #ccc;">
+      🎟️ Vouchers
+    </li>
+    <li style="padding: 0.75rem 0;">
+      🏆 FoodStudent rewards
+    </li>
+  </ul>
+</div>
+
     </form>
   </div>
 
