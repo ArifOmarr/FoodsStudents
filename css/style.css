@@ -1,3 +1,4 @@
+/* Global */
 body {
   margin: 0;
   font-family: 'Roboto', sans-serif;
@@ -5,6 +6,16 @@ body {
   color: #333;
 }
 
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+img {
+  max-width: 100%;
+}
+
+/* Auth Pages (Login/Register) */
 .auth-page {
   display: flex;
   height: 100vh;
@@ -81,3 +92,120 @@ body {
   text-decoration: none;
 }
 
+/* Navbar */
+.navbar {
+  background-color: #fff;
+  border-bottom: 1px solid #ddd;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar .logo {
+  font-size: 1.5rem;
+  color: #ff6b00;
+  font-weight: bold;
+}
+
+.navbar ul {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+}
+
+.navbar ul li a {
+  color: #333;
+  font-weight: 500;
+  padding: 6px 12px;
+  border-radius: 6px;
+  transition: background-color 0.3s ease;
+}
+
+.navbar ul li a:hover {
+  background-color: #ff6b00;
+  color: #fff;
+}
+
+/* Footer */
+.footer {
+  background-color: #333;
+  color: #fff;
+  padding: 2rem;
+  text-align: center;
+  margin-top: 3rem;
+}
+
+.footer a {
+  color: #ff6b00;
+  text-decoration: none;
+  margin: 0 8px;
+}
+
+.footer a:hover {
+  text-decoration: underline;
+}
+
+/* Menu Page */
+.menu-container {
+  padding: 2rem;
+}
+
+.menu-title {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #ff6b00;
+}
+
+.menu-categories {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 2rem;
+}
+
+.menu-categories button {
+  padding: 10px 16px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.menu-categories button.active,
+.menu-categories button:hover {
+  background-color: #ff6b00;
+  color: #fff;
+  border-color: #ff6b00;
+}
+
+.menu-items {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.menu-item {
+  background-color: #fff;
+  padding: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.menu-item img {
+  width: 100%;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+}
+
+.menu-item h4 {
+  margin-bottom: 0.5rem;
+  font-size: 1.2rem;
+}
+
+.menu-item p {
+  font-size: 0.95rem;
+  color: #555;
+  margin-bottom: 0.5rem;
+}

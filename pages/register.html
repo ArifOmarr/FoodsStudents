@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FoodStudent - Register</title>
+  <style>
+    /* ====== Base Dark Theme ====== */
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #121212;
+      color: #eee;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* ====== Navbar ====== */
+    nav {
+      background-color: #1f1f1f;
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.8);
+      user-select: none;
+    }
+
+    .nav-brand {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #ff5722;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .nav-links a {
+      font-weight: 600;
+      padding: 0.4rem 0.8rem;
+      border-radius: 6px;
+      transition: background-color 0.3s ease;
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .nav-links a:hover {
+      background-color: #ff5722;
+      color: #fff;
+    }
+
+    /* ====== Main content ====== */
+    main {
+      flex: 1 0 auto;
+      max-width: 420px;
+      margin: 4rem auto 2rem;
+      background-color: #222;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 0 12px rgb(255 87 34 / 0.6);
+      user-select: none;
+    }
+
+    h1 {
+      margin-top: 0;
+      margin-bottom: 1.5rem;
+      text-align: center;
+      color: #ff5722;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      user-select: text;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      padding: 0.6rem 0.8rem;
+      margin-bottom: 1.4rem;
+      border-radius: 6px;
+      border: none;
+      font-size: 1rem;
+      box-sizing: border-box;
+    }
+
+    input[type="text"]:focus,
+    input[type="email"]:focus,
+    input[type="password"]:focus {
+      outline: none;
+      box-shadow: 0 0 6px #ff5722;
+      background-color: #333;
+      color: #eee;
+    }
+
+    button {
+      width: 100%;
+      background-color: #ff5722;
+      border: none;
+      padding: 0.8rem 0;
+      font-weight: 700;
+      font-size: 1.1rem;
+      border-radius: 8px;
+      color: white;
+      cursor: pointer;
+      user-select: none;
+      box-shadow: 0 4px 12px rgb(255 87 34 / 0.7);
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #e64a19;
+    }
+
+    .login-link {
+      margin-top: 1.5rem;
+      text-align: center;
+      font-size: 0.9rem;
+      user-select: text;
+    }
+
+    .login-link a {
+      color: #ff5722;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .login-link a:hover {
+      text-decoration: underline;
+    }
+
+    /* Responsive */
+    @media (max-width: 480px) {
+      main {
+        margin: 2rem 1rem;
+        padding: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="nav-brand">FoodStudent</div>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="menu.html">Menu</a>
+      <a href="orders.html">Orders</a>
+      <a href="profile.html">Profile</a>
+      <a href="login.html">Login</a>
+    </div>
+  </nav>
+
+  <main>
+    <h1>Register</h1>
+    <form id="register-form" action="#" method="POST">
+      <label for="name">Full Name</label>
+      <input type="text" id="name" name="name" placeholder="John Doe" required />
+
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" placeholder="you@example.com" required />
+
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" placeholder="••••••••" required />
+
+      <button type="submit">Register</button>
+    </form>
+
+    <div class="login-link">
+      Already have an account? <a href="login.html">Login here</a>
+    </div>
+  </main>
+
+  <script>
+    // Example form submit handler
+    document.getElementById('register-form').addEventListener('submit', function(event) {
+      event.preventDefault();
+      // TODO: Add real registration logic here
+      alert('Registered successfully! Please log in.');
+      window.location.href = "login.html"; // Redirect after registration
+    });
+  </script>
+
+</body>
+</html>

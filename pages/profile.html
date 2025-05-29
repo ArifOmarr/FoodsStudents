@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Profile - FoodStudent</title>
+  <script src="https://unpkg.com/vue@3"></script>
+  <link rel="stylesheet" href="../css/style.css" />
+  <style>
+    body {
+      background-color: #121212;
+      color: #eee;
+      font-family: 'Roboto', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      margin: 0;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 3rem auto 4rem;
+      padding: 0 1rem;
+      flex: 1 0 auto;
+      user-select: text;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 2rem;
+      color: #ff5722;
+      user-select: none;
+    }
+
+    .profile-info {
+      background-color: #1e1e1e;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgb(255 87 34 / 0.3);
+    }
+
+    .profile-info label {
+      display: block;
+      margin-top: 1.5rem;
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+      user-select: none;
+      color: #ff5722;
+    }
+
+    .profile-info input {
+      width: 100%;
+      padding: 12px;
+      background-color: #2a2a2a;
+      border: 1px solid #444;
+      color: #eee;
+      border-radius: 6px;
+      font-size: 1rem;
+      user-select: text;
+      transition: border-color 0.3s ease;
+    }
+
+    .profile-info input:focus {
+      border-color: #ff6b00;
+      outline: none;
+      background-color: #3a3a3a;
+    }
+
+    .btn {
+      background-color: #ff6b00;
+      color: #fff;
+      border: none;
+      padding: 14px 22px;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 2rem;
+      font-weight: 700;
+      font-size: 1.1rem;
+      width: 100%;
+      transition: background-color 0.3s ease;
+      user-select: none;
+    }
+
+    .btn:hover {
+      background-color: #e05d00;
+    }
+
+    /* Navbar and footer placeholders styling if needed */
+    #navbar, #footer {
+      flex-shrink: 0;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="navbar"></div>
+
+  <div id="app" class="container">
+    <h2>Your Profile</h2>
+    <div class="profile-info">
+      <label for="name">Name:</label>
+      <input id="name" type="text" v-model="user.name" />
+
+      <label for="email">Email:</label>
+      <input id="email" type="email" v-model="user.email" />
+
+      <label for="location">Location:</label>
+      <input id="location" type="text" v-model="user.location" />
+
+      <button class="btn" @click="saveProfile">Save Profile</button>
+    </div>
+  </div>
+
+  <div id="footer"></div>
+
+  <script>
+    const app = Vue.createApp({
+      data() {
+        return {
+          user: {
+            name: 'John Doe',
+            email: 'john@example.com',
+            location: 'Campus Dorm 5'
+          }
+        };
+      },
+      methods: {
+        saveProfile() {
+          alert('Profile saved! (Note: This only updates locally for now.)');
+        }
+      }
+    });
+
+    app.mount('#app');
+
+    fetch('../components/navbar.html')
+      .then(res => res.text())
+      .then(data => document.getElementById('navbar').innerHTML = data);
+
+    fetch('../components/footer.html')
+      .then(res => res.text())
+      .then(data => document.getElementById('footer').innerHTML = data);
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Menu - FoodStudent</title>
+  <style>
+    /* Base Dark Theme */
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #121212;
+      color: #eee;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Navbar */
+    nav {
+      background-color: #1f1f1f;
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.8);
+      user-select: none;
+      flex-shrink: 0;
+    }
+
+    .nav-brand {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #ff5722;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .nav-links a {
+      font-weight: 600;
+      padding: 0.4rem 0.8rem;
+      border-radius: 6px;
+      transition: background-color 0.3s ease;
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      background-color: #ff5722;
+      color: #fff;
+    }
+
+    /* Container */
+    .container {
+      flex: 1 0 auto;
+      max-width: 1100px;
+      margin: 2.5rem auto 3rem;
+      padding: 0 1rem;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 2rem;
+      color: #ff5722;
+      user-select: none;
+    }
+
+    /* Menu Grid */
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.6rem;
+    }
+
+    .menu-item {
+      background-color: #222;
+      padding: 1.3rem 1.2rem 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgb(255 87 34 / 0.25);
+      transition: transform 0.2s ease, background-color 0.3s ease;
+      cursor: pointer;
+      user-select: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .menu-item:hover {
+      background-color: #2a2a2a;
+      transform: translateY(-6px);
+      box-shadow: 0 6px 15px rgb(255 87 34 / 0.5);
+    }
+
+    .menu-item img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      border-radius: 10px;
+      margin-bottom: 1rem;
+      user-select: none;
+    }
+
+    .menu-item h4 {
+      margin: 0.6rem 0 0.3rem;
+      font-weight: 700;
+      font-size: 1.2rem;
+      user-select: text;
+      color: #fff;
+    }
+
+    .menu-item p {
+      color: #bbb;
+      font-size: 0.9rem;
+      flex-grow: 1;
+      user-select: text;
+      margin: 0 0 0.7rem 0;
+    }
+
+    .price {
+      font-weight: 700;
+      color: #ff6b00;
+      font-size: 1.1rem;
+      user-select: text;
+    }
+
+    /* Footer */
+    footer {
+      flex-shrink: 0;
+      background-color: #1f1f1f;
+      color: #bbb;
+      padding: 1rem 2rem;
+      text-align: center;
+      font-size: 0.9rem;
+      border-top: 1px solid #333;
+      user-select: none;
+    }
+
+    /* Responsive */
+    @media (max-width: 480px) {
+      .menu-grid {
+        grid-template-columns: 1fr;
+      }
+      nav {
+        flex-wrap: wrap;
+      }
+      .nav-links {
+        width: 100%;
+        justify-content: center;
+        margin-top: 0.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="nav-brand">FoodStudent</div>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="menu.html" class="active">Menu</a>
+      <a href="orders.html">Orders</a>
+      <a href="profile.html">Profile</a>
+      <a href="login.html">Login</a>
+    </div>
+  </nav>
+
+  <div class="container">
+    <h2>Our Menu</h2>
+    <div class="menu-grid">
+      <div class="menu-item">
+        <img src="https://source.unsplash.com/400x300/?burger" alt="Cheeseburger" />
+        <h4>Cheeseburger</h4>
+        <p>Grilled beef patty with cheddar, lettuce, tomato and sauce</p>
+        <div class="price">$6.99</div>
+      </div>
+      <div class="menu-item">
+        <img src="https://source.unsplash.com/400x300/?pizza" alt="Pepperoni Pizza" />
+        <h4>Pepperoni Pizza</h4>
+        <p>Classic pepperoni with mozzarella and tomato sauce</p>
+        <div class="price">$8.49</div>
+      </div>
+      <div class="menu-item">
+        <img src="https://source.unsplash.com/400x300/?fries" alt="French Fries" />
+        <h4>French Fries</h4>
+        <p>Crispy golden fries with seasoning</p>
+        <div class="price">$2.99</div>
+      </div>
+      <div class="menu-item">
+        <img src="https://source.unsplash.com/400x300/?milkshake" alt="Chocolate Milkshake" />
+        <h4>Chocolate Milkshake</h4>
+        <p>Rich creamy chocolate shake with whipped cream</p>
+        <div class="price">$3.99</div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    &copy; 2025 FoodStudent. All rights reserved.
+  </footer>
+
+</body>
+</html>
