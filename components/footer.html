@@ -1,3 +1,57 @@
 <footer class="footer">
-  <p>&copy; 2025 FoodStudent. All rights reserved.</p>
+  <div class="footer-content">
+    <div class="footer-social">
+      <a href="#" class="social-link"><i class="fab fa-facebook"></i></a>
+      <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+      <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+    </div>
+    <p class="footer-text">© 2025 FoodStudent. All rights reserved.</p>
+  </div>
 </footer>
+
+<style>
+  .footer {
+    background-color: #1a1a1a;
+    padding: 1rem 0;
+    text-align: center;
+    margin-top: 2rem;
+  }
+
+  .footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+
+  .footer-social {
+    margin-bottom: 0.5rem;
+  }
+
+  .social-link {
+    color: #fff;
+    font-size: 1.2rem;
+    margin: 0 0.8rem;
+    transition: color 0.3s ease;
+  }
+
+  .social-link:hover {
+    color: #ff5722;
+  }
+
+  .footer-text {
+    color: #888;
+    font-size: 0.8rem;
+    margin: 0;
+  }
+
+  @media (max-width: 768px) {
+    .footer {
+      padding: 0.8rem 0;
+    }
+
+    .social-link {
+      font-size: 1rem;
+      margin: 0 0.5rem;
+    }
+  }
+</style> 

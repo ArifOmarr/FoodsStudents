@@ -3,310 +3,994 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Orders - FoodStudent</title>
+  <title>Order History - FoodStudent</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <!-- Google Fonts: Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     /* Base Styles */
     body {
       margin: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background-color: #121212;
       color: #eee;
       min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-
-    nav {
-      background-color: #1f1f1f;
-      padding: 1rem 2rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.8);
-      flex-shrink: 0;
-    }
-
-    .nav-brand {
-      font-size: 1.8rem;
-      font-weight: 700;
-      color: #ff5722;
-      letter-spacing: 1px;
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 1.5rem;
-      align-items: center;
-    }
-
-    .nav-links a {
-      font-weight: 600;
-      padding: 0.4rem 0.8rem;
-      border-radius: 6px;
-      transition: background-color 0.3s ease, color 0.3s ease;
-      color: inherit;
-      text-decoration: none;
-    }
-
-    .nav-links a:hover,
-    .nav-links a.active {
-      background-color: #ff5722;
-      color: #fff;
     }
 
     .container {
-      flex: 1 0 auto;
-      max-width: 1100px;
-      margin: 3rem auto;
-      padding: 0 2rem;
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 0 1rem;
     }
 
-    h2 {
-      text-align: center;
-      margin-bottom: 2.5rem;
-      color: #ff6b00;
+    .orders-title {
       font-size: 2rem;
-      font-weight: 700;
-      letter-spacing: 0.04em;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: separate;
-      border-spacing: 0;
-      background-color: #1e1e1e;
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 2px 12px rgba(255, 87, 34, 0.25);
-      table-layout: fixed;
-    }
-
-    th, td {
-      padding: 1rem 1.2rem;
-      text-align: left;
-      border-bottom: 1px solid #2a2a2a;
-      word-wrap: break-word;
-    }
-
-    th {
-      background-color: #2a2a2a;
-      font-weight: 700;
-      letter-spacing: 0.03em;
-      font-size: 0.95rem;
-    }
-
-    tbody tr:hover,
-    tbody tr:focus-within {
-      background-color: #2c2c2c;
-      cursor: default;
-      transition: background-color 0.25s ease;
-    }
-
-    .status {
-      padding: 0.35rem 0.8rem;
-      border-radius: 6px;
-      font-size: 0.9rem;
-      font-weight: 700;
-      display: inline-block;
-      min-width: 80px;
+      color: #ff5722;
+      margin-bottom: 2rem;
       text-align: center;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      box-shadow: 0 1px 3px rgb(0 0 0 / 0.2);
-      user-select: none;
     }
 
-    .pending {
-      background-color: #ff6b00;
-      color: white;
-      box-shadow: 0 0 8px #ff6b0080;
+    /* Order History Section */
+    .orders-section {
+      background: #1f1f1f;
+      border-radius: 16px;
+      padding: 1.5rem;
     }
 
-    .delivered {
-      background-color: #4caf50;
-      color: white;
-      box-shadow: 0 0 8px #4caf5080;
-    }
-
-    .cancelled {
-      background-color: #f44336;
-      color: white;
-      box-shadow: 0 0 8px #f4433680;
-    }
-
-    footer {
-      flex-shrink: 0;
-      background-color: #1f1f1f;
-      color: #bbb;
-      text-align: center;
-      padding: 1.2rem 1rem;
-      font-size: 0.9rem;
-      border-top: 1px solid #333;
-      user-select: none;
-      letter-spacing: 0.02em;
-    }
-
-    /* Responsive Table for small screens */
-    @media (max-width: 480px) {
-      table, thead, tbody, th, td, tr {
-        display: block;
-      }
-      thead tr {
-        position: absolute;
-        top: -9999px;
-        left: -9999px;
-      }
-      tr {
-        margin-bottom: 1.2rem;
-        border-radius: 12px;
-        background-color: #222;
-        padding: 1rem;
-        box-shadow: 0 2px 8px rgba(255, 87, 34, 0.2);
-        transition: background-color 0.3s ease;
-      }
-      tr:hover,
-      tr:focus-within {
-        background-color: #2c2c2c;
-      }
-      td {
-        border: none;
-        position: relative;
-        padding-left: 50%;
-        text-align: right;
-        font-size: 0.95rem;
-        white-space: normal;
-        word-break: break-word;
-      }
-      td:before {
-        position: absolute;
-        top: 1rem;
-        left: 1rem;
-        width: 45%;
-        padding-right: 10px;
-        white-space: nowrap;
-        font-weight: 700;
-        text-align: left;
-        color: #ff5722;
-        content: attr(data-label);
-        user-select: none;
-      }
-    }
-
-    .no-orders {
-      margin-top: 3rem;
-      padding: 1.5rem 2rem;
-      background-color: #2a2a2a;
-      border-radius: 12px;
-      text-align: center;
+    .section-title {
       font-size: 1.2rem;
-      color: #bbb;
-      user-select: none;
-      box-shadow: inset 0 0 8px #ff572280;
+      color: #fff;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
     }
 
-    /* Screen reader only class */
-    .sr-only {
-      position: absolute !important;
-      width: 1px !important;
-      height: 1px !important;
-      padding: 0 !important;
-      margin: -1px !important;
-      overflow: hidden !important;
-      clip: rect(0, 0, 0, 0) !important;
-      border: 0 !important;
+    .orders-list {
+      display: grid;
+      gap: 1.5rem;
+    }
+
+    .order-card {
+      background: #2a2a2a;
+      border-radius: 12px;
+      padding: 1.5rem;
+      border-left: 4px solid #ff5722;
+    }
+
+    .order-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid #333;
+    }
+
+    .order-info {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .order-id {
+      font-weight: 600;
+      color: #ff5722;
+      font-size: 1.1rem;
+    }
+
+    .order-date {
+      color: #aaa;
+      font-size: 0.9rem;
+    }
+
+    .order-status {
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .status-pending {
+      background: #ff9800;
+      color: #000;
+    }
+
+    .status-confirmed {
+      background: #2196f3;
+      color: #fff;
+    }
+
+    .status-preparing {
+      background: #9c27b0;
+      color: #fff;
+    }
+
+    .status-delivered {
+      background: #4caf50;
+      color: #fff;
+    }
+
+    .status-cancelled {
+      background: #f44336;
+      color: #fff;
+    }
+
+    .restaurant-info {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+      color: #fff;
+    }
+
+    .restaurant-icon {
+      color: #ff5722;
+    }
+
+    .order-items {
+      display: grid;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .order-item {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 1rem;
+      padding: 1rem;
+      background: #1f1f1f;
+      border-radius: 8px;
+      align-items: center;
+    }
+
+    .item-image {
+      width: 60px;
+      height: 60px;
+      border-radius: 8px;
+      object-fit: cover;
+    }
+
+    .item-details {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+
+    .item-name {
+      font-weight: 600;
+      color: #fff;
+      margin: 0;
+    }
+
+    .item-price {
+      color: #ff5722;
+      margin: 0;
+      font-size: 0.9rem;
+    }
+
+    .item-quantity {
+      color: #aaa;
+      font-size: 0.9rem;
+    }
+
+    .order-total {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 1rem;
+      border-top: 1px solid #333;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .total-amount {
+      color: #ff5722;
+      font-size: 1.2rem;
+    }
+
+    .empty-orders {
+      text-align: center;
+      padding: 3rem;
+      background: #2a2a2a;
+      border-radius: 12px;
+      color: #888;
+    }
+
+    .empty-orders i {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      color: #666;
+    }
+
+    .empty-orders h3 {
+      color: #fff;
+      margin: 0 0 1rem;
+    }
+
+    .empty-orders p {
+      margin: 0 0 1.5rem;
+    }
+
+    .empty-orders .action-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: #ff5722;
+      color: white;
+      border: none;
+      padding: 0.8rem 1.5rem;
+      border-radius: 8px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: background-color 0.3s ease;
+    }
+
+    .empty-orders .action-button:hover {
+      background: #ff8a50;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 3rem;
+      color: #aaa;
+    }
+
+    .loading i {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .error-message {
+      text-align: center;
+      padding: 2rem;
+      background: #2a2a2a;
+      border-radius: 12px;
+      color: #f44336;
+      border: 1px solid #f44336;
+    }
+
+    @media (max-width: 768px) {
+      .order-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+      }
+
+      .order-item {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+
+      .item-image {
+        margin: 0 auto;
+      }
+
+      .order-total {
+        flex-direction: column;
+        gap: 0.5rem;
+        text-align: center;
+      }
+    }
+
+    /* --- Enhanced Checkout UI --- */
+    .checkout-grid {
+      display: grid;
+      grid-template-columns: 1fr 400px;
+      gap: 2rem;
+    }
+    @media (max-width: 900px) {
+      .checkout-grid {
+        grid-template-columns: 1fr;
+      }
+      .summary-section {
+        position: static !important;
+        margin-top: 2rem;
+      }
+    }
+    .cart-section, .summary-section {
+      background: #1f1f1f;
+      border-radius: 16px;
+      padding: 1.5rem;
+      box-shadow: 0 4px 24px 0 rgba(0,0,0,0.18);
+      transition: box-shadow 0.2s;
+    }
+    .cart-section:hover, .summary-section:hover {
+      box-shadow: 0 8px 32px 0 rgba(255,87,34,0.12);
+    }
+    .cart-items .order-item {
+      transition: box-shadow 0.2s, transform 0.2s;
+      box-shadow: 0 2px 8px 0 rgba(0,0,0,0.10);
+      background: #232323;
+      border: 1px solid #292929;
+    }
+    .cart-items .order-item:hover {
+      box-shadow: 0 4px 16px 0 rgba(255,87,34,0.10);
+      transform: translateY(-2px) scale(1.01);
+    }
+    .checkout-btn {
+      box-shadow: 0 2px 8px 0 rgba(255,87,34,0.18);
+      transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
+    }
+    .checkout-btn:hover:not(:disabled) {
+      background: #ff784e;
+      box-shadow: 0 4px 16px 0 rgba(255,87,34,0.22);
+      transform: translateY(-2px) scale(1.01);
+    }
+    .payment-method.selected {
+      border: 2px solid #ff5722 !important;
+      background: #2a2a2a !important;
+      box-shadow: 0 2px 12px 0 rgba(255,87,34,0.10);
+    }
+    .payment-method {
+      transition: border 0.2s, background 0.2s, box-shadow 0.2s;
+    }
+    .payment-method:focus {
+      outline: 2px solid #ff5722;
+    }
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+      font-size: 1rem;
+    }
+    .summary-row.total {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #ff5722;
+      margin-top: 1rem;
+    }
+    .discount-row .amount {
+      color: #4caf50;
+    }
+    .voucher-input {
+      border-radius: 6px;
+      border: 1px solid #333;
+      padding: 0.5rem 1rem;
+      background: #232323;
+      color: #fff;
+      font-size: 1rem;
+      width: 60%;
+      transition: border 0.2s;
+    }
+    .voucher-input:focus {
+      border: 1.5px solid #ff5722;
+      outline: none;
+    }
+    .apply-voucher-btn {
+      background: #ff5722;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 0.5rem 1.2rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .apply-voucher-btn:hover {
+      background: #ff784e;
+    }
+    .form-group label {
+      color: #bbb;
+      font-size: 0.95rem;
+      margin-bottom: 0.2rem;
+      display: block;
+    }
+    .form-group input, .form-group select {
+      width: 100%;
+      padding: 0.5rem 0.8rem;
+      border-radius: 6px;
+      border: 1px solid #333;
+      background: #232323;
+      color: #fff;
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+      transition: border 0.2s;
+    }
+    .form-group input:focus, .form-group select:focus {
+      border: 1.5px solid #ff5722;
+      outline: none;
+    }
+    /* Loading Spinner */
+    .spinner {
+      display: inline-block;
+      width: 32px;
+      height: 32px;
+      border: 4px solid #ff5722;
+      border-top: 4px solid #232323;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    /* Confirmation Modal */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.7);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal {
+      background: #232323;
+      border-radius: 16px;
+      padding: 2rem 2.5rem;
+      box-shadow: 0 8px 32px 0 rgba(255,87,34,0.18);
+      text-align: center;
+      color: #fff;
+      max-width: 90vw;
+    }
+    .modal h2 {
+      color: #ff5722;
+      margin-bottom: 1rem;
+    }
+    .modal .modal-btn {
+      margin-top: 1.5rem;
+      background: #ff5722;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 0.7rem 2rem;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .modal .modal-btn:hover {
+      background: #ff784e;
+    }
+    /* Payment Method Cards */
+    .payment-methods {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+    @media (max-width: 900px) {
+      .payment-methods {
+        flex-direction: column;
+        gap: 1rem;
+      }
+    }
+    .payment-method {
+      flex: 1 1 0;
+      min-width: 180px;
+      background: #232323;
+      border: 2px solid #333;
+      border-radius: 14px;
+      box-shadow: 0 2px 8px 0 rgba(0,0,0,0.10);
+      padding: 1.2rem 1rem 1rem 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.7rem;
+      cursor: pointer;
+      transition: border 0.2s, background 0.2s, box-shadow 0.2s, transform 0.1s;
+      outline: none;
+      position: relative;
+    }
+    .payment-method.selected {
+      border: 2.5px solid #ff5722 !important;
+      background: #282828 !important;
+      box-shadow: 0 4px 16px 0 rgba(255,87,34,0.10);
+      transform: scale(1.03);
+    }
+    .payment-method:focus {
+      outline: 2px solid #ff5722;
+      z-index: 2;
+    }
+    .payment-method:hover:not(.selected) {
+      border: 2px solid #ff784e;
+      background: #262626;
+      box-shadow: 0 4px 16px 0 rgba(255,87,34,0.08);
+      transform: scale(1.01);
+    }
+    .payment-icon {
+      font-size: 2.2rem;
+      color: #ff5722;
+      margin-bottom: 0.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+    }
+    .payment-info h3 {
+      margin: 0;
+      font-size: 1.08rem;
+      font-weight: 600;
+      color: #fff;
+      text-align: center;
+    }
+    .payment-info p {
+      margin: 0;
+      font-size: 0.95rem;
+      color: #bbb;
+      text-align: center;
     }
   </style>
 </head>
 <body>
+  <div id="navbar-container"></div>
 
-  <!-- Navbar -->
-  <nav role="navigation" aria-label="Primary navigation">
-    <div class="nav-brand" tabindex="0">FoodStudent</div>
-    <div class="nav-links" id="nav-links">
-      <a href="index.html">Home</a>
-      <a href="menu.html">Menu</a>
-      <a href="orders.html" class="active" aria-current="page">Orders</a>
-      <a href="profile.html">Profile</a>
-      <!-- Login/logout link will be appended here by script -->
+  <div class="container">
+    <h1 class="orders-title">Checkout</h1>
+    <div id="checkout-section" style="margin-bottom: 2rem;"></div>
+    
+    <!-- Add Orders List Section -->
+    <div class="orders-section">
+      <h2 class="section-title"><i class="fas fa-receipt"></i> Your Orders</h2>
+      <div id="orders-list" class="orders-list">
+        <!-- Orders will be displayed here -->
+      </div>
     </div>
-  </nav>
+  </div>
 
-  <main class="container" role="main">
-    <h2>Your Orders</h2>
-
-    <table aria-describedby="order-description" role="table">
-      <caption id="order-description" class="sr-only">
-        List of your recent food orders with order ID, date, items, total cost, and status
-      </caption>
-      <thead>
-        <tr>
-          <th scope="col">Order ID</th>
-          <th scope="col">Date</th>
-          <th scope="col">Items</th>
-          <th scope="col">Total</th>
-          <th scope="col">Status</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr tabindex="0">
-          <td data-label="Order ID">#1001</td>
-          <td data-label="Date">May 27, 2025</td>
-          <td data-label="Items">Cheeseburger, Fries</td>
-          <td data-label="Total">$9.98</td>
-          <td data-label="Status"><span class="status delivered">Delivered</span></td>
-        </tr>
-        <tr tabindex="0">
-          <td data-label="Order ID">#1002</td>
-          <td data-label="Date">May 28, 2025</td>
-          <td data-label="Items">Pepperoni Pizza</td>
-          <td data-label="Total">$8.49</td>
-          <td data-label="Status"><span class="status pending">Pending</span></td>
-        </tr>
-        <tr tabindex="0">
-          <td data-label="Order ID">#1003</td>
-          <td data-label="Date">May 29, 2025</td>
-          <td data-label="Items">Chocolate Milkshake</td>
-          <td data-label="Total">$3.99</td>
-          <td data-label="Status"><span class="status cancelled">Cancelled</span></td>
-        </tr>
-      </tbody>
-    </table>
-
-    <!-- Uncomment this if user has no orders -->
-    <!--
-    <div class="no-orders" role="alert" aria-live="polite">
-      You currently have no orders.
-    </div>
-    -->
-  </main>
-
-  <footer role="contentinfo">
-    &copy; 2025 FoodStudent. All rights reserved.
-  </footer>
+  <div id="footer-container"></div>
 
   <script>
-    // Highlight current page dynamically - optional because "Orders" link is hardcoded active here
-    // Dynamically add login/logout link
-    const navLinks = document.getElementById('nav-links');
-    const isLoggedIn = localStorage.getItem('loggedIn') === 'true';
+    // Load navbar
+    fetch('../components/navbar.html')
+      .then(response => response.text())
+      .then(html => {
+        document.getElementById('navbar-container').innerHTML = html;
+      });
 
-    const authLink = document.createElement('a');
-    if (isLoggedIn) {
-      authLink.href = "#";
-      authLink.textContent = "Log Out";
-      authLink.setAttribute('role', 'button');
-      authLink.onclick = (e) => {
-        e.preventDefault();
-        localStorage.setItem('loggedIn', 'false');
-        alert("You have logged out.");
-        location.reload();
-      };
-    } else {
-      authLink.href = "login.html";
-      authLink.textContent = "LogIn";
+    // Load footer
+    fetch('../components/footer.html')
+      .then(response => response.text())
+      .then(html => {
+        document.getElementById('footer-container').innerHTML = html;
+      });
+
+    // Get current user
+    function getCurrentUser() {
+      const user = localStorage.getItem('user');
+      return user ? JSON.parse(user) : null;
     }
-    navLinks.appendChild(authLink);
-  </script>
 
+    // Format date
+    function formatDate(dateString) {
+      const date = new Date(dateString);
+      return date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+    }
+
+    // Get status class
+    function getStatusClass(status) {
+      const statusMap = {
+        'PENDING': 'status-pending',
+        'CONFIRMED': 'status-confirmed',
+        'PREPARING': 'status-preparing',
+        'DELIVERED': 'status-delivered',
+        'CANCELLED': 'status-cancelled'
+      };
+      return statusMap[status] || 'status-pending';
+    }
+
+    // Fetch user orders
+    async function fetchUserOrders(userId) {
+      try {
+        console.log('Fetching orders for user:', userId);
+        const response = await fetch(`/api/orders/user/${userId}`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch orders');
+        }
+        const result = await response.json();
+        console.log('Fetched orders:', result);
+        return result.data || [];
+      } catch (error) {
+        console.error('Error fetching orders:', error);
+        throw error;
+      }
+    }
+
+    // Render orders
+    function renderOrders(orders) {
+      console.log('Rendering orders:', orders);
+      const ordersContainer = document.getElementById('orders-list');
+      if (!ordersContainer) {
+        console.error('Orders container not found!');
+        return;
+      }
+
+      if (orders.length === 0) {
+        ordersContainer.innerHTML = `
+          <div class="empty-orders">
+            <i class="fas fa-shopping-bag"></i>
+            <h3>No orders yet</h3>
+            <p>You haven't placed any orders yet. Start exploring our menu!</p>
+            <a href="menu.html" class="action-button">
+              <i class="fas fa-utensils"></i>
+              Browse Menu
+            </a>
+          </div>
+        `;
+        return;
+      }
+
+      ordersContainer.innerHTML = orders.map(order => {
+        const totalAmount = order.items.reduce((sum, item) => sum + (Number(item.price) * item.quantity), 0);
+        console.log('Processing order:', order.id, 'with items:', order.items);
+        
+        return `
+          <div class="order-card">
+            <div class="order-header">
+              <div class="order-info">
+                <div class="order-id">Order #${order.id}</div>
+                <div class="order-date">${formatDate(order.created_at)}</div>
+              </div>
+              <div class="order-status ${getStatusClass(order.status)}">
+                ${order.status}
+              </div>
+            </div>
+
+            <div class="restaurant-info">
+              <i class="fas fa-store restaurant-icon"></i>
+              <span>${order.restaurant_name}</span>
+            </div>
+
+            <div class="order-items">
+              ${order.items.map(item => `
+                <div class="order-item">
+                  <img src="${item.image_url}" alt="${item.title}" class="item-image">
+                  <div class="item-details">
+                    <h4 class="item-name">${item.title}</h4>
+                    <p class="item-price">RM ${Number(item.price).toFixed(2)}</p>
+                  </div>
+                  <div class="item-quantity">
+                    Qty: ${item.quantity}
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+
+            <div class="order-total">
+              <span>Total Amount:</span>
+              <span class="total-amount">RM ${totalAmount.toFixed(2)}</span>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // --- Modern Checkout UI ---
+    function renderCheckout() {
+      const checkoutSection = document.getElementById('checkout-section');
+      let cart = JSON.parse(localStorage.getItem('cart')) || [];
+      let selectedPaymentMethod = window.selectedPaymentMethod || null;
+      let appliedVoucher = window.appliedVoucher || null;
+      let voucherError = window.voucherError || '';
+      let voucherInputValue = window.voucherInputValue || '';
+      let orderFeedback = window.orderFeedback || '';
+      let isLoading = window.isLoading || false;
+      let showModal = window.showModal || false;
+      let orderType = window.orderType || 'delivery'; // 'delivery' or 'pickup'
+
+      // Auto-apply voucher from localStorage (set on index page)
+      const savedVoucher = localStorage.getItem('selectedVoucher');
+      if (savedVoucher && !voucherInputValue) {
+        voucherInputValue = savedVoucher;
+        localStorage.removeItem('selectedVoucher');
+      }
+
+      // Voucher definitions
+      const vouchers = {
+        'STUDENT15': { code: 'STUDENT15', description: '15% off for students', discount: 0.15, type: 'percentage' },
+        'FREEDEL': { code: 'FREEDEL', description: 'Free delivery on orders above RM 25', discount: 5, type: 'fixed', minOrder: 25 },
+        'WEEKEND20': { code: 'WEEKEND20', description: '20% off on weekends', discount: 0.20, type: 'percentage', weekendOnly: true }
+      };
+
+      function validateVoucher(code, subtotal) {
+        const voucher = vouchers[code];
+        if (!voucher) return { valid: false, message: 'Invalid voucher code' };
+        if (voucher.weekendOnly) {
+          const today = new Date();
+          const isWeekend = today.getDay() === 0 || today.getDay() === 6;
+          if (!isWeekend) return { valid: false, message: 'This voucher is only valid on weekends' };
+        }
+        if (voucher.minOrder && subtotal < voucher.minOrder) {
+          return { valid: false, message: `Order must be at least RM ${voucher.minOrder} to use this voucher` };
+        }
+        return { valid: true, voucher };
+      }
+
+      function getTotals(cart, voucher, orderType) {
+        const subtotal = cart.reduce((sum, item) => sum + (Number(item.price) * item.quantity), 0);
+        const deliveryFee = orderType === 'delivery' ? 5 : 0;
+        let discount = 0;
+        if (voucher) {
+          if (voucher.type === 'percentage') discount = subtotal * voucher.discount;
+          else if (voucher.type === 'fixed') discount = voucher.discount;
+        }
+        const total = Math.max(0, subtotal + deliveryFee - discount);
+        return { subtotal, deliveryFee, discount, total };
+      }
+
+      function orderTypeHTML(selected) {
+        return `
+          <div class="order-type-toggle" style="display:flex; gap:1.5rem; align-items:center; margin-bottom:1.5rem;">
+            <label style="display:flex; align-items:center; gap:0.5rem; cursor:pointer;">
+              <input type="radio" name="orderType" value="delivery" ${selected==='delivery'?'checked':''} style="accent-color:#ff5722;"> <i class="fas fa-truck"></i> Delivery
+            </label>
+            <label style="display:flex; align-items:center; gap:0.5rem; cursor:pointer;">
+              <input type="radio" name="orderType" value="pickup" ${selected==='pickup'?'checked':''} style="accent-color:#ff5722;"> <i class="fas fa-store"></i> Self Pick Up
+            </label>
+          </div>
+        `;
+      }
+
+      function paymentMethodsHTML(selected) {
+        return `
+          <div class="payment-methods">
+            <div class="payment-method${selected==='card'?' selected':''}" data-method="card" tabindex="0">
+              <div class="payment-icon"><i class="fas fa-credit-card"></i></div>
+              <div class="payment-info"><h3>Credit/Debit Card</h3><p>Visa, Mastercard, Amex</p></div>
+            </div>
+            <div class="payment-method${selected==='bank'?' selected':''}" data-method="bank" tabindex="0">
+              <div class="payment-icon"><i class="fas fa-university"></i></div>
+              <div class="payment-info"><h3>Online Banking</h3><p>FPX, Maybank2u, CIMB Clicks</p></div>
+            </div>
+            <div class="payment-method${selected==='ewallet'?' selected':''}" data-method="ewallet" tabindex="0">
+              <div class="payment-icon"><i class="fas fa-wallet"></i></div>
+              <div class="payment-info"><h3>eWallet</h3><p>Touch 'n Go, GrabPay</p></div>
+            </div>
+          </div>
+        `;
+      }
+
+      function paymentDetailsHTML(method) {
+        if (method === 'card') {
+          return `
+            <div class="form-group"><label>Card Number</label><input type="text" placeholder="1234 5678 9012 3456" maxlength="19"></div>
+            <div class="form-group"><label>Cardholder Name</label><input type="text" placeholder="John Doe"></div>
+            <div class="card-row" style="display:flex; gap:1rem;">
+              <div class="form-group"><label>Expiry Date</label><input type="text" placeholder="MM/YY" maxlength="5"></div>
+              <div class="form-group"><label>CVV</label><input type="text" placeholder="123" maxlength="3"></div>
+            </div>
+          `;
+        } else if (method === 'bank') {
+          return `
+            <div class="form-group"><label>Select Bank</label>
+              <select><option value="">Select your bank</option><option>Maybank</option><option>CIMB</option><option>Public Bank</option><option>RHB</option></select>
+            </div>
+          `;
+        } else if (method === 'ewallet') {
+          return `
+            <div class="form-group"><label>eWallet Account</label><input type="text" placeholder="Enter your eWallet account"></div>
+          `;
+        }
+        return '';
+      }
+
+      function cartItemsHTML(cart) {
+        return cart.map(item => `
+          <div class="order-item">
+            <img src="${item.image}" alt="${item.name}" class="item-image">
+            <div class="item-details">
+              <h4 class="item-name">${item.name}</h4>
+              <p class="item-price">RM ${Number(item.price).toFixed(2)}</p>
+            </div>
+            <div class="item-quantity">Qty: ${item.quantity}</div>
+          </div>
+        `).join('');
+      }
+
+      function render() {
+        cart = JSON.parse(localStorage.getItem('cart')) || [];
+        let voucherCode = appliedVoucher ? appliedVoucher.code : voucherInputValue;
+        const { subtotal, deliveryFee, discount, total } = getTotals(cart, appliedVoucher, orderType);
+        checkoutSection.innerHTML = '';
+        if (cart.length === 0) {
+          checkoutSection.innerHTML = `<div class='empty-cart' style='text-align:center;padding:3rem;background:#2a2a2a;border-radius:12px;color:#888;'><i class='fas fa-shopping-cart' style='font-size:3rem;margin-bottom:1rem;color:#666;'></i><h3>Your cart is empty</h3><p>Looks like you haven't added any items to your cart yet.</p><a href='menu.html' class='action-button' style='display:inline-flex;align-items:center;gap:0.5rem;background:#ff5722;color:white;border:none;padding:0.8rem 1.5rem;border-radius:8px;font-weight:600;text-decoration:none;transition:background-color 0.3s ease;'><i class='fas fa-utensils'></i>Browse Menu</a></div>`;
+          return;
+        }
+        checkoutSection.innerHTML = `
+          <div class="checkout-grid">
+            <div class="cart-section">
+              <h2 class="section-title"><i class="fas fa-shopping-cart"></i> Your Cart</h2>
+              <div class="cart-items">${cartItemsHTML(cart)}</div>
+            </div>
+            <div class="summary-section" style="position:sticky; top:2rem;">
+              <h2 class="summary-title"><i class="fas fa-receipt"></i> Order Summary</h2>
+              ${orderTypeHTML(orderType)}
+              <div class="summary-row"><span>Subtotal</span><span>RM ${subtotal.toFixed(2)}</span></div>
+              ${discount > 0 ? `<div class="summary-row discount-row"><span>Discount</span><span class="amount">-RM ${discount.toFixed(2)}</span></div>` : ''}
+              ${orderType === 'delivery' ? `<div class="summary-row"><span>Delivery Fee</span><span>RM ${deliveryFee.toFixed(2)}</span></div>` : ''}
+              <div class="summary-row total"><span>Total</span><span class="amount">RM ${total.toFixed(2)}</span></div>
+              <div class="voucher-section" id="voucher-section" style="margin:1.5rem 0; padding:1.5rem; background:#2a2a2a; border-radius:12px;">
+                <h3 class="section-title">Apply Voucher <i class="fas fa-tag" title="Enter a valid voucher code"></i></h3>
+                <div class="voucher-input-group" style="display:flex; gap:1rem; margin-bottom:1rem;">
+                  <input type="text" class="voucher-input" placeholder="Enter voucher code" id="voucher-input" value="${voucherCode || ''}" aria-label="Voucher code">
+                  <button class="apply-voucher-btn" id="apply-voucher-btn">Apply</button>
+                </div>
+                <div id="voucher-message" class="voucher-message" style="color:${voucherError ? '#f44336' : '#4caf50'};">${voucherError || (appliedVoucher ? 'Voucher applied! ' + appliedVoucher.description : '')}</div>
+              </div>
+              <div class="payment-section">
+                <h2 class="section-title"><i class="fas fa-credit-card"></i> Payment Method</h2>
+                ${paymentMethodsHTML(selectedPaymentMethod)}
+                <div id="payment-details" class="payment-details" style="margin-top:1.5rem;">${paymentDetailsHTML(selectedPaymentMethod)}</div>
+                <button id="checkout-btn" class="checkout-btn" style="width:100%; background:#ff5722; color:white; border:none; padding:1rem; border-radius:8px; font-weight:600; font-size:1.1rem; cursor:pointer; transition:background-color 0.3s ease; margin-top:1.5rem;${!selectedPaymentMethod ? 'opacity:0.5;pointer-events:none;' : ''}" ${!selectedPaymentMethod ? 'disabled' : ''}>${isLoading ? '<span class="spinner"></span>' : 'Place Order'}</button>
+                <div id="order-feedback" style="margin-top:1rem; color:${orderFeedback.startsWith('Success') ? '#4caf50' : '#f44336'}; font-weight:600;">${orderFeedback}</div>
+              </div>
+            </div>
+          </div>
+          ${showModal ? `
+            <div class="modal-overlay" tabindex="-1">
+              <div class="modal">
+                <h2><i class="fas fa-check-circle"></i> Order Placed!</h2>
+                <p>Your order has been placed successfully.<br>Thank you for ordering with FoodStudent!</p>
+                <button class="modal-btn" id="close-modal-btn">OK</button>
+              </div>
+            </div>
+          ` : ''}
+        `;
+
+        // Order type selection
+        document.querySelectorAll('input[name="orderType"]').forEach(radio => {
+          radio.addEventListener('change', (e) => {
+            window.orderType = e.target.value;
+            renderCheckout();
+          });
+        });
+
+        // Payment method selection
+        document.querySelectorAll('.payment-method').forEach(method => {
+          method.addEventListener('click', () => {
+            window.selectedPaymentMethod = method.dataset.method;
+            renderCheckout();
+          });
+        });
+
+        // Voucher apply
+        document.getElementById('apply-voucher-btn').onclick = () => {
+          const code = document.getElementById('voucher-input').value.trim().toUpperCase();
+          window.voucherInputValue = code;
+          const { valid, voucher, message } = validateVoucher(code, subtotal);
+          if (valid) {
+            window.appliedVoucher = voucher;
+            window.voucherError = '';
+          } else {
+            window.appliedVoucher = null;
+            window.voucherError = message;
+          }
+          renderCheckout();
+        };
+
+        // Place order
+        document.getElementById('checkout-btn').onclick = async () => {
+          if (!selectedPaymentMethod) {
+            window.orderFeedback = 'Please select a payment method.';
+            renderCheckout();
+            return;
+          }
+          if (cart.length === 0) {
+            window.orderFeedback = 'Your cart is empty.';
+            renderCheckout();
+            return;
+          }
+
+          window.isLoading = true;
+          renderCheckout();
+
+          try {
+            const user = JSON.parse(localStorage.getItem('user'));
+            if (!user) {
+              throw new Error('Please login to place an order');
+            }
+
+            // Create order for each item in cart
+            for (const item of cart) {
+              const response = await fetch('/api/orders', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                  user_id: user.id,
+                  menu_item_id: item.id,
+                  quantity: item.quantity
+                })
+              });
+
+              if (!response.ok) {
+                const error = await response.json();
+                throw new Error(error.message || 'Failed to place order');
+              }
+            }
+
+            // Clear cart and show success
+            window.orderFeedback = '';
+            localStorage.setItem('cart', JSON.stringify([]));
+            window.appliedVoucher = null;
+            window.voucherError = '';
+            window.voucherInputValue = '';
+            window.selectedPaymentMethod = null;
+            window.isLoading = false;
+            window.showModal = true;
+
+            // Fetch and display updated orders
+            try {
+              const orders = await fetchUserOrders(user.id);
+              renderOrders(orders);
+            } catch (error) {
+              console.error('Error fetching updated orders:', error);
+            }
+
+            renderCheckout();
+          } catch (error) {
+            window.isLoading = false;
+            window.orderFeedback = error.message;
+            renderCheckout();
+          }
+        };
+
+        // Modal close
+        if (showModal) {
+          document.getElementById('close-modal-btn').onclick = () => {
+            window.showModal = false;
+            window.orderFeedback = 'Order Complete! Thank you for your order.';
+            renderCheckout();
+          };
+        }
+      }
+
+      render();
+    }
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      console.log('Page loaded, initializing...');
+      renderCheckout();
+      
+      // Initialize orders display
+      const user = getCurrentUser();
+      console.log('Current user:', user);
+      
+      if (user) {
+        try {
+          const orders = await fetchUserOrders(user.id);
+          renderOrders(orders);
+        } catch (error) {
+          console.error('Error fetching orders:', error);
+          const ordersContainer = document.getElementById('orders-list');
+          if (ordersContainer) {
+            ordersContainer.innerHTML = `
+              <div class="error-message">
+                <i class="fas fa-exclamation-circle"></i>
+                Failed to load orders. Please try again later.
+              </div>
+            `;
+          }
+        }
+      } else {
+        console.log('No user logged in');
+        const ordersContainer = document.getElementById('orders-list');
+        if (ordersContainer) {
+          ordersContainer.innerHTML = `
+            <div class="error-message">
+              <i class="fas fa-exclamation-circle"></i>
+              Please log in to view your orders.
+            </div>
+          `;
+        }
+      }
+    });
+  </script>
 </body>
 </html>

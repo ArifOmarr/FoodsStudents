@@ -3,11 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>FoodStudent - Vouchers & Discounts</title>
+  <title>FoodStudent - Home</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <!-- Google Fonts: Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     body {
       margin: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background-color: #121212;
       color: #eee;
       display: flex;
@@ -16,242 +19,630 @@
     }
 
     .container {
-      display: flex;
-      justify-content: center;
       flex: 1;
-      margin: 0 100px;
-    }
-
-    main {
-      flex: 1;
-      max-width: 1000px;
+      max-width: 1200px;
       width: 100%;
+      margin: 0 auto;
       padding: 2rem 1rem;
     }
 
-    .promo-scroll {
+    /* Hero Section */
+    .hero {
+      position: relative;
+      height: 600px;
+      margin-bottom: 4rem;
+      border-radius: 24px;
       overflow: hidden;
-      white-space: nowrap;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+
+    .slider {
+      position: relative;
+      height: 100%;
+      width: 100%;
+    }
+
+    .slide {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out;
+    }
+
+    .slide.active {
+      opacity: 1;
+    }
+
+    .slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .slide-content {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 3rem;
+      background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+      color: white;
+    }
+
+    .slide-title {
+      font-size: 3rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+      color: #ff5722;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .slide-description {
+      font-size: 1.3rem;
       margin-bottom: 2rem;
+      max-width: 600px;
+      line-height: 1.6;
+    }
+
+    .slide-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: #ff5722;
+      color: white;
+      border: none;
+      padding: 1rem 2rem;
       border-radius: 12px;
-      border: 1px solid #444;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
     }
 
-    .promo-inner {
-      display: inline-block;
-      animation: scrollPromo 24s linear infinite;
+    .slide-button:hover {
+      background: #ff8a50;
+      transform: translateY(-2px);
     }
 
-    .promo-inner img {
-      height: 200px;
-      margin-right: 1rem;
-      border-radius: 12px;
+    .slider-nav {
+      position: absolute;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 12px;
+      z-index: 10;
     }
 
-    @keyframes scrollPromo {
-      0% { transform: translateX(0%); }
-      100% { transform: translateX(-50%); }
+    .slider-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.5);
+      cursor: pointer;
+      transition: all 0.3s ease;
     }
 
-    .welcome-msg {
+    .slider-dot.active {
+      background: #ff5722;
+      transform: scale(1.2);
+    }
+
+    .slider-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 60px;
+      height: 60px;
+      background: rgba(0, 0, 0, 0.6);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      z-index: 10;
+      backdrop-filter: blur(4px);
+    }
+
+    .slider-arrow:hover {
+      background: rgba(255, 87, 34, 0.8);
+      transform: translateY(-50%) scale(1.1);
+    }
+
+    .slider-prev {
+      left: 30px;
+    }
+
+    .slider-next {
+      right: 30px;
+    }
+
+    /* Quick Actions */
+    .quick-actions {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 4rem;
+    }
+
+    .action-card {
+      background: #1f1f1f;
+      border-radius: 16px;
+      padding: 1.5rem;
       text-align: center;
-      font-size: 1.4rem;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .action-card:hover {
+      transform: translateY(-5px);
+      background: #2a2a2a;
+    }
+
+    .action-icon {
+      font-size: 2rem;
+      color: #ff5722;
+      margin-bottom: 1rem;
+    }
+
+    .action-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .action-description {
+      color: #aaa;
+      font-size: 0.9rem;
+    }
+
+    /* Featured Section */
+    .featured {
+      margin-bottom: 4rem;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       margin-bottom: 2rem;
+    }
+
+    .section-title {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #ff5722;
+      margin: 0;
+    }
+
+    .section-link {
+      color: #ff5722;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 600;
+      transition: color 0.3s ease;
+    }
+
+    .section-link:hover {
       color: #ff8a50;
+    }
+
+    .featured-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+    }
+
+    .featured-item {
+      background: #1f1f1f;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s ease;
+    }
+
+    .featured-item:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 24px rgba(255, 87, 34, 0.2);
+    }
+
+    .featured-item img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+
+    .featured-item:hover img {
+      transform: scale(1.05);
+    }
+
+    .featured-content {
+      padding: 1.5rem;
+    }
+
+    .featured-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #ff8a50;
+      margin-bottom: 0.5rem;
+    }
+
+    .featured-description {
+      color: #ccc;
+      margin-bottom: 1rem;
+      line-height: 1.5;
+    }
+
+    .featured-price {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #ff5722;
+    }
+
+    /* Voucher Section */
+    .voucher-section {
+      margin-bottom: 4rem;
     }
 
     .voucher-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 1.5rem;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 2rem;
     }
 
     .voucher-card {
       background: linear-gradient(135deg, #ff7043, #ffab91);
       border-radius: 16px;
       padding: 1.5rem;
-      box-shadow: 0 6px 12px rgb(255 87 34 / 0.5);
+      box-shadow: 0 6px 12px rgb(255 87 34 / 0.2);
       color: #fff;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .voucher-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1));
+      z-index: 1;
     }
 
     .voucher-card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 10px 20px rgb(255 87 34 / 0.7);
+      transform: translateY(-8px) rotate(-1deg);
+      box-shadow: 0 12px 24px rgb(255 87 34 / 0.4);
     }
 
-    .voucher-title {
+    .voucher-card__title {
       font-size: 1.4rem;
       font-weight: 700;
       margin-bottom: 0.5rem;
+      position: relative;
+      z-index: 2;
     }
 
-    .voucher-desc {
-      font-size: 1rem;
+    .voucher-card__description {
       margin-bottom: 1rem;
+      opacity: 0.9;
+      position: relative;
+      z-index: 2;
     }
 
-    .voucher-code {
-      background: rgba(255, 255, 255, 0.2);
-      padding: 0.4rem;
-      border-radius: 12px;
-      text-align: center;
+    .voucher-card__code {
       font-family: monospace;
-      font-size: 1.1rem;
+      font-size: 1.2rem;
+      background: rgba(255, 255, 255, 0.2);
+      padding: 0.8rem;
+      border-radius: 8px;
       margin-bottom: 1rem;
+      position: relative;
+      z-index: 2;
+      backdrop-filter: blur(4px);
     }
 
-    .claim-btn {
-      background-color: #fff;
+    .voucher-card__claim {
+      background: white;
       color: #ff5722;
       border: none;
-      padding: 0.6rem 1.2rem;
-      font-weight: 700;
-      font-size: 1rem;
-      border-radius: 50px;
+      padding: 1rem 2rem;
+      border-radius: 12px;
+      font-weight: 600;
       cursor: pointer;
-      transition: background-color 0.3s ease;
+      transition: all 0.3s ease;
+      position: relative;
+      z-index: 2;
+      width: 100%;
     }
 
-    .claim-btn:hover {
-      background-color: #ff5722;
-      color: #fff;
+    .voucher-card__claim:hover {
+      background: #f5f5f5;
+      transform: translateY(-2px);
     }
 
-    footer {
-      background-color: #1f1f1f;
-      text-align: center;
-      padding: 1rem;
-      color: #777;
-      font-size: 0.9rem;
-    }
-
-    footer a {
-      color: #ff5722;
-      text-decoration: none;
-    }
-
-    footer a:hover {
-      text-decoration: underline;
-    }
-
+    /* Responsive Design */
     @media (max-width: 768px) {
-      .container {
-        margin: 0 10px;
+      .hero {
+        height: 400px;
       }
 
-      .promo-inner img {
-        height: 140px;
+      .slide-title {
+        font-size: 2rem;
       }
-    }
 
-    /* Highlight active nav link */
-    .active {
-      color: #ff8a50;
-      font-weight: bold;
-      text-decoration: underline;
+      .slide-description {
+        font-size: 1.1rem;
+      }
+
+      .slider-arrow {
+        width: 50px;
+        height: 50px;
+      }
+
+      .quick-actions {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
 <body>
+  <div id="navbar-container"></div>
 
-<!-- Navbar container -->
-<div id="navbar-container"></div>
-
-<script>
-  // Load navbar from external file
-  fetch('../components/navbar.html')
-    .then(res => res.text())
-    .then(data => {
-      document.getElementById('navbar-container').innerHTML = data;
-
-      // Highlight active link after navbar loads
-      const currentPath = window.location.pathname.split("/").pop();
-      const links = document.querySelectorAll('#navbar-container a');
-      links.forEach(link => {
-        if (link.getAttribute('href') === currentPath) {
-          link.classList.add('active');
-        }
-      });
-
-      // Login/logout logic
-      const isLoggedIn = localStorage.getItem('loggedIn') === 'true';
-      const authLink = document.createElement('a');
-
-      if (isLoggedIn) {
-        authLink.href = "#";
-        authLink.textContent = "Log Out";
-        authLink.onclick = () => {
-          localStorage.setItem('loggedIn', 'false');
-          alert('You have logged out.');
-          location.reload();
-        };
-      } else {
-        authLink.href = "login.html";
-        authLink.textContent = "Log In";
-      }
-
-      document.querySelector('#navbar-container .nav-links').appendChild(authLink);
-    });
-</script>
-
-<div class="container">
-  <main>
-    <div class="promo-scroll">
-      <div class="promo-inner">
-        <img src="https://images.unsplash.com/photo-1586190848861-99aa4a171e90?auto=format&fit=crop&w=400&q=80" alt="Promo1" />
-        <img src="https://images.unsplash.com/photo-1600891963932-b89c1eaeeecf?auto=format&fit=crop&w=400&q=80" alt="Promo2" />
-        <img src="https://images.unsplash.com/photo-1613145996361-4782b3fdfb0c?auto=format&fit=crop&w=400&q=80" alt="Promo3" />
-        <img src="https://images.unsplash.com/photo-1607746882042-944635dfe10e?auto=format&fit=crop&w=400&q=80" alt="Promo4" />
+  <div class="container">
+    <!-- Hero Section -->
+    <div class="hero">
+      <div class="slider">
+        <div class="slide active">
+          <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1200&q=80" alt="Delicious Food">
+          <div class="slide-content">
+            <h1 class="slide-title">Delicious Food Delivered</h1>
+            <p class="slide-description">Order your favorite meals from the best restaurants near you. Fast delivery and great prices!</p>
+            <a href="menu.html" class="slide-button">
+              <i class="fas fa-utensils"></i>
+              Order Now
+            </a>
+          </div>
+        </div>
+        <div class="slide">
+          <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=1200&q=80" alt="Special Offers">
+          <div class="slide-content">
+            <h1 class="slide-title">Special Student Offers</h1>
+            <p class="slide-description">Exclusive discounts and deals for students. Save more on your favorite meals!</p>
+            <a href="vouchers.html" class="slide-button">
+              <i class="fas fa-tag"></i>
+              View Offers
+            </a>
+          </div>
+        </div>
+        <div class="slide">
+          <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1200&q=80" alt="Restaurant">
+          <div class="slide-content">
+            <h1 class="slide-title">Top Restaurants</h1>
+            <p class="slide-description">Discover the best restaurants in your area. From local favorites to popular chains.</p>
+            <a href="restaurants.html" class="slide-button">
+              <i class="fas fa-store"></i>
+              Explore Restaurants
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="slider-nav">
+        <div class="slider-dot active"></div>
+        <div class="slider-dot"></div>
+        <div class="slider-dot"></div>
+      </div>
+      <div class="slider-arrow slider-prev">
+        <i class="fas fa-chevron-left"></i>
+      </div>
+      <div class="slider-arrow slider-next">
+        <i class="fas fa-chevron-right"></i>
       </div>
     </div>
 
-    <div class="welcome-msg">Welcome, Alex! Claim your vouchers below:</div>
-
-    <div class="voucher-grid" id="voucher-grid">
-      <!-- Voucher cards will be inserted by JS -->
+    <!-- Quick Actions -->
+    <div class="quick-actions">
+      <a href="menu.html" class="action-card">
+        <div class="action-icon">
+          <i class="fas fa-utensils"></i>
+        </div>
+        <h3 class="action-title">Order Food</h3>
+        <p class="action-description">Browse menus and order your favorite meals</p>
+      </a>
+      <a href="orders.html#voucher-section" class="action-card">
+        <div class="action-icon">
+          <i class="fas fa-tag"></i>
+        </div>
+        <h3 class="action-title">Vouchers</h3>
+        <p class="action-description">Claim and use your discount vouchers</p>
+      </a>
+      <a href="profile.html" class="action-card">
+        <div class="action-icon">
+          <i class="fas fa-user"></i>
+        </div>
+        <h3 class="action-title">My Account</h3>
+        <p class="action-description">Manage your orders and preferences</p>
+      </a>
+      <a href="orders.html" class="action-card">
+        <div class="action-icon">
+          <i class="fas fa-shopping-bag"></i>
+        </div>
+        <h3 class="action-title">My Orders</h3>
+        <p class="action-description">Track your orders and view history</p>
+      </a>
     </div>
-  </main>
-</div>
 
-<footer>
-  &copy; 2025 FoodStudent &nbsp;|&nbsp; 
-  <a href="terms.html">Terms</a> &nbsp;|&nbsp;
-  <a href="privacy.html">Privacy</a>
-</footer>
+    <!-- Featured Section -->
+    <div class="featured">
+      <div class="section-header">
+        <h2 class="section-title">Featured Items</h2>
+        <a href="menu.html" class="section-link">
+          View All
+          <i class="fas fa-arrow-right"></i>
+        </a>
+      </div>
+      <div class="featured-grid">
+        <!-- Featured items will be dynamically added here -->
+      </div>
+    </div>
 
-<script>
-  const vouchers = [
-    { title: "10% Off on Next Order", description: "Use this voucher to get 10% discount.", code: "SAVE10" },
-    { title: "Free Delivery", description: "Enjoy free delivery on orders above $15.", code: "FREEDEL" },
-    { title: "$5 Off Orders $25+", description: "Spend $25 or more, get $5 off.", code: "FIVEOFF25" },
-    { title: "Buy 1 Get 1 Free", description: "Buy any burger, get another one free.", code: "B1G1" },
-    { title: "Student Discount", description: "Exclusive 15% off for students.", code: "STUDENT15" },
-    { title: "Free Dessert", description: "Get a free dessert with any meal.", code: "SWEET" },
-  ];
+    <!-- Voucher Section -->
+    <div class="voucher-section">
+      <div class="section-header">
+        <h2 class="section-title">Special Offers</h2>
+        <a href="orders.html#voucher-section" class="section-link" onclick="handleVoucherClick(event)">
+          View All
+          <i class="fas fa-arrow-right"></i>
+        </a>
+      </div>
+      <div class="voucher-grid">
+        <div class="voucher-card">
+          <h3 class="voucher-card__title">Student Special</h3>
+          <p class="voucher-card__description">Get 15% off on your first order with your student ID</p>
+          <div class="voucher-card__code">STUDENT15</div>
+          <button class="voucher-card__claim" onclick="handleVoucherClaim('STUDENT15')">Claim Now</button>
+        </div>
+        <div class="voucher-card">
+          <h3 class="voucher-card__title">Free Delivery</h3>
+          <p class="voucher-card__description">Free delivery on orders above RM 25</p>
+          <div class="voucher-card__code">FREEDEL</div>
+          <button class="voucher-card__claim" onclick="handleVoucherClaim('FREEDEL')">Claim Now</button>
+        </div>
+        <div class="voucher-card">
+          <h3 class="voucher-card__title">Weekend Special</h3>
+          <p class="voucher-card__description">20% off on all orders during weekends</p>
+          <div class="voucher-card__code">WEEKEND20</div>
+          <button class="voucher-card__claim" onclick="handleVoucherClaim('WEEKEND20')">Claim Now</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
-  const container = document.getElementById('voucher-grid');
-  vouchers.forEach(v => {
-    const div = document.createElement('div');
-    div.className = "voucher-card";
-    div.innerHTML = `
-      <div class="voucher-title">${v.title}</div>
-      <div class="voucher-desc">${v.description}</div>
-      <div class="voucher-code">${v.code}</div>
-      <button class="claim-btn">Claim</button>
-    `;
-    div.querySelector(".claim-btn").addEventListener("click", e => {
-      alert(`Voucher "${v.code}" claimed!`);
-      e.target.textContent = "Claimed ✓";
-      e.target.disabled = true;
-      e.target.style.backgroundColor = "#4caf50";
-      e.target.style.color = "#fff";
-      e.target.style.cursor = "default";
+  <div id="footer-container"></div>
+
+  <script>
+    // Load navbar
+    fetch('../components/navbar.html')
+      .then(response => response.text())
+      .then(html => {
+        document.getElementById('navbar-container').innerHTML = html;
+      });
+
+    // Load footer
+    fetch('../components/footer.html')
+      .then(response => response.text())
+      .then(html => {
+        document.getElementById('footer-container').innerHTML = html;
+      });
+
+    // Slider functionality
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    const dots = document.querySelectorAll('.slider-dot');
+    const prevButton = document.querySelector('.slider-prev');
+    const nextButton = document.querySelector('.slider-next');
+
+    function showSlide(index) {
+      slides.forEach(slide => slide.classList.remove('active'));
+      dots.forEach(dot => dot.classList.remove('active'));
+      
+      slides[index].classList.add('active');
+      dots[index].classList.add('active');
+    }
+
+    function nextSlide() {
+      currentSlide = (currentSlide + 1) % slides.length;
+      showSlide(currentSlide);
+    }
+
+    function prevSlide() {
+      currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+      showSlide(currentSlide);
+    }
+
+    // Auto slide
+    setInterval(nextSlide, 5000);
+
+    // Event listeners
+    prevButton.addEventListener('click', prevSlide);
+    nextButton.addEventListener('click', nextSlide);
+    dots.forEach((dot, index) => {
+      dot.addEventListener('click', () => {
+        currentSlide = index;
+        showSlide(currentSlide);
+      });
     });
-    container.appendChild(div);
-  });
-</script>
 
+    // Featured items
+    const featuredItems = [
+      {
+        title: "Chicken Rice",
+        description: "Delicious Hainanese chicken rice with special sauce",
+        price: "RM 12.90",
+        image: "https://images.unsplash.com/photo-1603133872878-684f208fb84b?auto=format&fit=crop&w=400&q=80"
+      },
+      {
+        title: "Nasi Lemak",
+        description: "Traditional Malaysian dish with fragrant rice",
+        price: "RM 8.90",
+        image: "https://images.unsplash.com/photo-1603133872878-684f208fb84b?auto=format&fit=crop&w=400&q=80"
+      },
+      {
+        title: "Char Kuey Teow",
+        description: "Stir-fried flat rice noodles with prawns and eggs",
+        price: "RM 10.90",
+        image: "https://images.unsplash.com/photo-1603133872878-684f208fb84b?auto=format&fit=crop&w=400&q=80"
+      }
+    ];
+
+    const featuredGrid = document.querySelector('.featured-grid');
+    featuredGrid.innerHTML = featuredItems.map(item => `
+      <div class="featured-item">
+        <img src="${item.image}" alt="${item.title}">
+        <div class="featured-content">
+          <h3 class="featured-title">${item.title}</h3>
+          <p class="featured-description">${item.description}</p>
+          <p class="featured-price">${item.price}</p>
+        </div>
+      </div>
+    `).join('');
+
+    // Add these new functions
+    function handleVoucherClick(event) {
+      event.preventDefault();
+      const voucherCode = event.target.closest('.voucher-card')?.querySelector('.voucher-card__code')?.textContent;
+      if (voucherCode) {
+        localStorage.setItem('selectedVoucher', voucherCode);
+      }
+      window.location.href = 'orders.html#voucher-section';
+    }
+
+    function handleVoucherClaim(code) {
+      localStorage.setItem('selectedVoucher', code);
+      window.location.href = 'orders.html#voucher-section';
+    }
+
+    // Update voucher claim functionality
+    document.querySelectorAll('.voucher-card__claim').forEach(button => {
+      button.addEventListener('click', () => {
+        const code = button.parentElement.querySelector('.voucher-card__code').textContent;
+        alert(`Voucher code ${code} has been copied to your clipboard!`);
+      });
+    });
+  </script>
 </body>
 </html>

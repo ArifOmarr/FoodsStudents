@@ -4,52 +4,19 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>FoodStudent - Register</title>
+  <link rel="stylesheet" href="/css/styles.css">
+  <!-- Google Fonts: Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     /* ====== Base Dark Theme ====== */
     body {
       margin: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background-color: #121212;
       color: #eee;
       display: flex;
       flex-direction: column;
       min-height: 100vh;
-    }
-
-    /* ====== Navbar ====== */
-    nav {
-      background-color: #1f1f1f;
-      padding: 1rem 2rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.8);
-      user-select: none;
-    }
-
-    .nav-brand {
-      font-size: 1.8rem;
-      font-weight: 700;
-      color: #ff5722;
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 1.5rem;
-    }
-
-    .nav-links a {
-      font-weight: 600;
-      padding: 0.4rem 0.8rem;
-      border-radius: 6px;
-      transition: background-color 0.3s ease;
-      color: inherit;
-      text-decoration: none;
-    }
-
-    .nav-links a:hover {
-      background-color: #ff5722;
-      color: #fff;
     }
 
     /* ====== Main content ====== */
@@ -88,6 +55,9 @@
       border: none;
       font-size: 1rem;
       box-sizing: border-box;
+      background-color: #2a2a2a;
+      color: #eee;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
     }
 
     input[type="text"]:focus,
@@ -95,8 +65,8 @@
     input[type="password"]:focus {
       outline: none;
       box-shadow: 0 0 6px #ff5722;
-      background-color: #333;
-      color: #eee;
+      background-color: #3a3a3a;
+      color: #fff;
     }
 
     button {
@@ -118,6 +88,11 @@
       background-color: #e64a19;
     }
 
+    button:disabled {
+      background-color: #666;
+      cursor: not-allowed;
+    }
+
     .login-link {
       margin-top: 1.5rem;
       text-align: center;
@@ -135,6 +110,37 @@
       text-decoration: underline;
     }
 
+    .error-message {
+      color: #ff4444;
+      font-size: 0.9rem;
+      margin-top: -1rem;
+      margin-bottom: 1rem;
+      display: none;
+    }
+
+    .loading {
+      display: none;
+      text-align: center;
+      margin-top: 1rem;
+    }
+
+    .loading::after {
+      content: '';
+      display: inline-block;
+      width: 1rem;
+      height: 1rem;
+      border: 2px solid #fff;
+      border-radius: 50%;
+      border-top-color: transparent;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
     /* Responsive */
     @media (max-width: 480px) {
       main {
@@ -142,50 +148,116 @@
         padding: 1.5rem;
       }
     }
+
+    /* Password Requirements */
+    .password-requirements {
+      background: #2a2a2a;
+      border-radius: 8px;
+      padding: 1rem;
+      margin: -1rem 0 1rem;
+      font-size: 0.9rem;
+      color: #aaa;
+    }
+
+    .password-requirements ul {
+      margin: 0.5rem 0 0;
+      padding-left: 1.5rem;
+    }
+
+    .password-requirements li {
+      margin-bottom: 0.3rem;
+    }
+
+    .password-requirements li.valid {
+      color: #4CAF50;
+    }
+
+    .password-requirements li.valid::before {
+      content: '✓';
+      margin-right: 0.5rem;
+    }
+
+    .password-requirements li.invalid::before {
+      content: '×';
+      margin-right: 0.5rem;
+      color: #ff4444;
+    }
+
+    /* Message styling */
+    .message {
+      margin-top: 1rem;
+      padding: 1rem;
+      border-radius: 8px;
+      text-align: center;
+      font-weight: 600;
+      display: none;
+    }
+
+    .message.success {
+      background-color: rgba(76, 175, 80, 0.1);
+      color: #4CAF50;
+      border: 1px solid #4CAF50;
+    }
+
+    .message.error {
+      background-color: rgba(244, 67, 54, 0.1);
+      color: #f44336;
+      border: 1px solid #f44336;
+    }
   </style>
 </head>
 <body>
-
-  <nav>
-    <div class="nav-brand">FoodStudent</div>
-    <div class="nav-links">
-      <a href="index.html">Home</a>
-      <a href="menu.html">Menu</a>
-      <a href="orders.html">Orders</a>
-      <a href="profile.html">Profile</a>
-      <a href="login.html">Login</a>
-    </div>
-  </nav>
+  <div id="navbar"></div>
 
   <main>
     <h1>Register</h1>
-    <form id="register-form" action="#" method="POST">
+    <form id="register-form">
       <label for="name">Full Name</label>
       <input type="text" id="name" name="name" placeholder="John Doe" required />
+      <div id="name-error" class="error-message">Please enter your full name</div>
 
       <label for="email">Email</label>
       <input type="email" id="email" name="email" placeholder="you@example.com" required />
+      <div id="email-error" class="error-message">Please enter a valid email address</div>
 
       <label for="password">Password</label>
       <input type="password" id="password" name="password" placeholder="••••••••" required />
+      <div class="password-requirements">
+        <p>Password must meet the following requirements:</p>
+        <ul>
+          <li id="length-check">At least 8 characters long</li>
+          <li id="uppercase-check">At least 1 uppercase letter</li>
+          <li id="lowercase-check">At least 1 lowercase letter</li>
+          <li id="number-check">At least 1 number</li>
+        </ul>
+      </div>
+      <div id="password-error" class="error-message">Please ensure your password meets all requirements</div>
 
-      <button type="submit">Register</button>
+      <label for="confirm-password">Confirm Password</label>
+      <input type="password" id="confirm-password" name="confirm-password" placeholder="••••••••" required />
+      <div id="confirm-password-error" class="error-message">Passwords do not match</div>
+
+      <button type="submit" id="register-button">Register</button>
+      <div id="loading" class="loading"></div>
     </form>
+
+    <div id="message" class="message"></div>
 
     <div class="login-link">
       Already have an account? <a href="login.html">Login here</a>
     </div>
   </main>
 
+  <div id="footer"></div>
+
   <script>
-    // Example form submit handler
-    document.getElementById('register-form').addEventListener('submit', function(event) {
-      event.preventDefault();
-      // TODO: Add real registration logic here
-      alert('Registered successfully! Please log in.');
-      window.location.href = "login.html"; // Redirect after registration
+    fetch('/components/navbar.html').then(res => res.text()).then(html => {
+      document.getElementById('navbar').innerHTML = html;
+    });
+    fetch('/components/footer.html').then(res => res.text()).then(html => {
+      document.getElementById('footer').innerHTML = html;
     });
   </script>
-
+  <script src="/js/register.js"></script>
 </body>
 </html>

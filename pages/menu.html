@@ -4,10 +4,14 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>FoodStudent - Menu</title>
-  <style>
+  <!-- Google Fonts: Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="/css/style.css">
+ <style>
     body {
       margin: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background-color: #121212;
       color: #eee;
       display: flex;
@@ -17,13 +21,13 @@
 
     .container {
       flex: 1;
-      max-width: 1000px;
+      max-width: 1200px;
       width: 100%;
       margin: 0 auto;
       padding: 2rem 1rem;
     }
 
-    h1 {
+    .page-title {
       text-align: center;
       font-weight: 700;
       color: #ff6b00;
@@ -31,164 +35,606 @@
       letter-spacing: 0.05em;
     }
 
-    .menu-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 1.5rem;
+    /* Restaurant Selection */
+    .restaurant-section {
+      margin-bottom: 3rem;
     }
 
-    .menu-item {
+    .restaurant-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+
+    .restaurant-card {
       background: #1f1f1f;
       border-radius: 16px;
-      padding: 1.5rem;
-      box-shadow: 0 6px 12px rgb(255 87 34 / 0.5);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      overflow: hidden;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s, box-shadow 0.3s;
       cursor: pointer;
-      user-select: none;
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 2rem;
+    }
+
+    .restaurant-card:hover {
+      transform: translateY(-8px) scale(1.03);
+      box-shadow: 0 10px 20px rgba(255, 87, 34, 0.4);
+    }
+
+    .restaurant-card.selected {
+      border: 2px solid #ff5722;
+    }
+
+    .restaurant-image-wrapper {
+      width: 100%;
+      height: 180px;
+      overflow: hidden;
+      background: #222;
+    }
+
+    .restaurant-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .restaurant-info {
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .restaurant-name {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #ff8a50;
+      margin-bottom: 0.2rem;
+    }
+
+    .restaurant-cuisine {
+      color: #ccc;
+      font-size: 1rem;
+    }
+
+    .restaurant-rating, .restaurant-delivery {
+      color: #4caf50;
+      font-size: 1rem;
+    }
+
+    /* Menu Categories */
+    .menu-categories {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      overflow-x: auto;
+      padding: 0.5rem;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+
+    .menu-categories::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* Force dark style for category buttons */
+    .category-button {
+      background: #232323 !important;
+      border: 2px solid #333 !important;
+      color: #fff !important;
+      padding: 0.8rem 1.5rem !important;
+      border-radius: 25px !important;
+      font-weight: 600 !important;
+      cursor: pointer !important;
+      transition: all 0.3s ease !important;
+      white-space: nowrap !important;
+      display: flex !important;
+      align-items: center !important;
+      gap: 0.5rem !important;
+      box-shadow: none !important;
+    }
+
+    .category-button:hover {
+      border-color: #ff5722 !important;
+      color: #ff5722 !important;
+      background: #181818 !important;
+    }
+
+    .category-button.active {
+      background: #ff5722 !important;
+      border-color: #ff5722 !important;
+      color: white !important;
+    }
+
+    .category-button i {
+      font-size: 1.1rem;
+    }
+
+    /* Search Bar */
+    .search-bar {
+      margin-bottom: 2rem;
+      position: relative;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 1rem 1rem 1rem 3rem;
+      background: #1f1f1f;
+      border: 2px solid #333;
+      border-radius: 12px;
+      color: #fff;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .search-input:focus {
+      outline: none;
+      border-color: #ff5722;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #666;
+      font-size: 1.2rem;
+    }
+
+    /* Menu Grid */
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    /* Menu Item */
+    .menu-item {
+      background: #232323;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+      transition: transform 0.3s, box-shadow 0.3s;
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 2rem;
+      position: relative;
     }
 
     .menu-item:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 10px 20px rgb(255 87 34 / 0.7);
+      transform: translateY(-8px) scale(1.03);
+      box-shadow: 0 10px 20px rgba(255, 87, 34, 0.4);
     }
 
-    .menu-item img {
+    .menu-item-image {
       width: 100%;
-      height: 160px;
+      height: 180px;
       object-fit: cover;
-      border-radius: 12px;
-      margin-bottom: 1rem;
+      display: block;
+      border-top-left-radius: 16px;
+      border-top-right-radius: 16px;
     }
 
-    .menu-title {
-      font-size: 1.3rem;
-      font-weight: 700;
+    .menu-item-content {
+      padding: 1.2rem 1rem 1rem 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      background: rgba(20, 20, 20, 0.95);
+      border-bottom-left-radius: 16px;
+      border-bottom-right-radius: 16px;
+    }
+
+    .menu-item-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
       margin-bottom: 0.5rem;
+    }
+
+    .menu-item-title {
+      font-size: 1.2rem;
+      font-weight: 700;
       color: #ff8a50;
+      margin: 0;
+      flex: 1;
+      text-shadow: 0 2px 8px #000;
     }
 
-    .menu-desc {
-      font-size: 1rem;
-      margin-bottom: 1rem;
-      color: #ccc;
-    }
-
-    .menu-price {
+    .menu-item-price {
       font-size: 1.1rem;
       font-weight: 700;
       color: #ff5722;
+      margin-left: 1rem;
+      text-shadow: 0 2px 8px #000;
     }
 
-    footer {
-      background-color: #1f1f1f;
-      text-align: center;
+    .menu-item-description {
+      font-size: 1rem;
+      color: #ccc;
+      line-height: 1.5;
+      margin-bottom: 0.5rem;
+      flex: 1;
+      text-shadow: 0 2px 8px #000;
+    }
+
+    .menu-item-actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-top: auto;
+    }
+
+    .add-to-cart {
+      flex: 1;
+      background: #ff5722;
+      color: white;
+      border: none;
       padding: 1rem;
-      color: #777;
-      font-size: 0.9rem;
-      flex-shrink: 0;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
     }
 
-    footer a {
+    .add-to-cart:hover {
+      background: #ff8a50;
+    }
+
+    .add-to-cart i {
+      font-size: 1.1rem;
+    }
+
+    /* Empty State */
+    .empty-state {
+      text-align: center;
+      padding: 3rem;
+      color: #666;
+    }
+
+    .empty-state i {
+      font-size: 3rem;
+      margin-bottom: 1rem;
       color: #ff5722;
-      text-decoration: none;
     }
 
-    footer a:hover {
-      text-decoration: underline;
+    .empty-state h3 {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+      color: #fff;
+    }
+
+    .empty-state p {
+      color: #aaa;
+    }
+
+    .favorite-button {
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      padding: 0.5rem;
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      position: relative;
+    }
+
+    .favorite-button:hover {
+      color: #ff5722;
+      background: rgba(255, 87, 34, 0.1);
+    }
+
+    .favorite-button.active {
+      color: #ff5722;
+    }
+
+    .favorite-button i {
+      transition: transform 0.3s ease;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    .favorite-button:hover i {
+      transform: scale(1.1);
+    }
+
+    .favorite-tooltip {
+      position: absolute;
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.8);
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      white-space: nowrap;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+      margin-bottom: 0.5rem;
+    }
+
+    .favorite-button:hover .favorite-tooltip {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .favorite-button .favorite-tooltip::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border-width: 5px;
+      border-style: solid;
+      border-color: rgba(0, 0, 0, 0.8) transparent transparent transparent;
+    }
+
+    .menu-item-tag {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: rgba(0, 0, 0, 0.8);
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      backdrop-filter: blur(4px);
+    }
+
+    .menu-item-rating {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .rating-stars {
+      color: #ffd700;
+    }
+
+    .rating-count {
+      color: #aaa;
+      font-size: 0.9rem;
+    }
+
+    .cart-notification {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #4caf50;
+      color: white;
+      padding: 1rem 2rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      display: none;
+      animation: slideIn 0.3s ease;
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateX(100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    .menu-section {
+      display: none;
+    }
+
+    .menu-section.active {
+      display: block;
+    }
+
+    .back-button {
+      background: none;
+      border: none;
+      color: #ff5722;
+      font-size: 1.1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+      padding: 0;
+    }
+
+    .back-button:hover {
+      color: #ff8a50;
     }
 
     @media (max-width: 768px) {
       .container {
-        margin: 0 10px;
+        padding: 1rem;
+      }
+
+      .restaurant-grid {
+        gap: 1rem;
+      }
+
+      .categories {
+        gap: 0.5rem;
+      }
+
+      .menu-grid {
+        gap: 1rem;
       }
     }
 
-    /* Highlight active nav link */
-    .active {
-      color: #ff8a50;
+    /* Toast notification styles */
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: rgba(0, 0, 0, 0.8);
+      color: white;
+      padding: 1rem 2rem;
+      border-radius: 8px;
+      font-weight: 500;
+      z-index: 1000;
+      opacity: 0;
+      transition: all 0.3s ease;
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    .add-to-cart-btn {
+      background: #ff5722;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 0.7rem 1.2rem;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      margin-top: 0.5rem;
+      transition: background 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .add-to-cart-btn:hover {
+      background: #ff8a50;
+    }
+
+    /* Modern quantity controls */
+    .quantity-controls {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin: 0.7rem 0 0.5rem 0;
+      justify-content: flex-start;
+    }
+
+    .qty-btn {
+      background: #232323;
+      color: #ff5722;
+      border: 2px solid #ff5722;
+      border-radius: 50%;
+      width: 2.2rem;
+      height: 2.2rem;
+      font-size: 1.3rem;
       font-weight: bold;
-      text-decoration: underline;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s, border 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      outline: none;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    .qty-btn:hover, .qty-btn:focus {
+      background: #ff5722;
+      color: #fff;
+      border-color: #ff8a50;
+    }
+
+    .qty-input {
+      width: 2.5rem;
+      text-align: center;
+      border: 2px solid #333;
+      border-radius: 8px;
+      background: #181818;
+      color: #fff;
+      font-size: 1.1rem;
+      font-weight: 600;
+      padding: 0.3rem 0;
+      margin: 0 0.2rem;
+      outline: none;
+      transition: border 0.2s;
+    }
+
+    .qty-input:focus {
+      border-color: #ff5722;
     }
   </style>
 </head>
 <body>
+  <div id="navbar-container"></div>
+  <main class="container">
+    <h1 class="page-title">Choose Your Restaurant</h1>
+    <section class="restaurant-section" id="restaurant-section">
+      <div class="restaurant-grid" id="restaurant-grid"></div>
+    </section>
+    <section class="menu-section" id="menu-section">
+      <button class="back-button" id="back-button">← Back to Restaurants</button>
+      <h2 class="page-title" id="restaurant-name"></h2>
+      
+      <!-- Search Bar -->
+      <div class="search-bar">
+        <i class="fas fa-search search-icon"></i>
+        <input type="text" class="search-input" placeholder="Search for dishes..." id="search-input">
+      </div>
 
-<!-- Navbar container -->
-<div id="navbar-container"></div>
+      <!-- Menu Categories -->
+      <div class="menu-categories">
+        <button class="category-button active" data-category="all">
+          <i class="fas fa-utensils"></i>
+          All Items
+        </button>
+        <button class="category-button" data-category="Rice">
+          <i class="fas fa-bowl-food"></i>
+          Rice Dishes
+        </button>
+        <button class="category-button" data-category="Noodles">
+          <i class="fas fa-wheat-awn"></i>
+          Noodles
+        </button>
+        <button class="category-button" data-category="Curries">
+          <i class="fas fa-drumstick-bite"></i>
+          Curries
+        </button>
+        <button class="category-button" data-category="Drinks">
+          <i class="fas fa-mug-hot"></i>
+          Drinks
+        </button>
+        <button class="category-button" data-category="Snacks">
+          <i class="fas fa-cookie"></i>
+          Snacks
+        </button>
+      </div>
 
-<div class="container">
-  <h1>Our Menu</h1>
-  <div class="menu-grid" id="menu-grid">
-    <!-- Menu items will be inserted by JS -->
-  </div>
-</div>
-
-<footer>
-  &copy; 2025 FoodStudent &nbsp;|&nbsp; 
-  <a href="terms.html">Terms</a> &nbsp;|&nbsp;
-  <a href="privacy.html">Privacy</a>
-</footer>
-
-<script>
-  // Load navbar component
-  fetch('../components/navbar.html')
-    .then(res => res.text())
-    .then(data => {
-      document.getElementById('navbar-container').innerHTML = data;
-
-      // Highlight active menu link
-      const currentPath = window.location.pathname.split("/").pop();
-      const links = document.querySelectorAll('#navbar-container a');
-      links.forEach(link => {
-        if (link.getAttribute('href') === currentPath) {
-          link.classList.add('active');
-        }
-      });
-
-      // Login/logout logic
-      const isLoggedIn = localStorage.getItem('loggedIn') === 'true';
-      const authLink = document.createElement('a');
-
-      if (isLoggedIn) {
-        authLink.href = "#";
-        authLink.textContent = "Log Out";
-        authLink.onclick = () => {
-          localStorage.setItem('loggedIn', 'false');
-          alert('You have logged out.');
-          location.reload();
-        };
-      } else {
-        authLink.href = "login.html";
-        authLink.textContent = "Log In";
-      }
-
-      document.querySelector('#navbar-container .nav-links').appendChild(authLink);
-    });
-
-  // Sample menu data
-  const menuItems = [
-    { title: "Cheeseburger", description: "Juicy beef patty with cheese, lettuce, tomato & special sauce.", price: "$5.99", img: "https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=400&q=80" },
-    { title: "Veggie Pizza", description: "Fresh vegetables on a crispy thin crust, topped with mozzarella.", price: "$7.49", img: "https://images.unsplash.com/photo-1548365328-580f3289b012?auto=format&fit=crop&w=400&q=80" },
-    { title: "Chicken Wings", description: "Spicy and crispy wings served with blue cheese dip.", price: "$6.50", img: "https://images.unsplash.com/photo-1600891964336-44ca53f5c4a7?auto=format&fit=crop&w=400&q=80" },
-    { title: "Caesar Salad", description: "Crisp romaine lettuce, parmesan cheese & Caesar dressing.", price: "$4.75", img: "https://images.unsplash.com/photo-1542444459-3b8984de4bb1?auto=format&fit=crop&w=400&q=80" },
-    { title: "Chocolate Milkshake", description: "Rich and creamy chocolate milkshake topped with whipped cream.", price: "$3.99", img: "https://images.unsplash.com/photo-1551022370-36d23f71d02e?auto=format&fit=crop&w=400&q=80" },
-    { title: "French Fries", description: "Golden and crispy fries with a sprinkle of sea salt.", price: "$2.50", img: "https://images.unsplash.com/photo-1551782450-a2132b4ba21d?auto=format&fit=crop&w=400&q=80" }
-  ];
-
-  const menuGrid = document.getElementById('menu-grid');
-
-  menuItems.forEach(item => {
-    const div = document.createElement('div');
-    div.className = 'menu-item';
-    div.innerHTML = `
-      <img src="${item.img}" alt="${item.title}" />
-      <div class="menu-title">${item.title}</div>
-      <div class="menu-desc">${item.description}</div>
-      <div class="menu-price">${item.price}</div>
-    `;
-    menuGrid.appendChild(div);
-  });
-</script>
-
+      <!-- Menu Grid -->
+      <div class="menu-grid" id="menu-grid">
+        <!-- Menu items will be dynamically added here -->
+      </div>
+    </section>
+  </main>
+  <div class="cart-notification" id="cart-notification">Item added to cart!</div>
+  <div id="footer-container"></div>
+  <script>
+    fetch('/components/navbar.html')
+      .then(res => res.text())
+      .then(html => { document.getElementById('navbar-container').innerHTML = html; });
+    fetch('/components/footer.html')
+      .then(res => res.text())
+      .then(html => { document.getElementById('footer-container').innerHTML = html; });
+  </script>
+  <script src="/js/menu.js"></script>
 </body>
 </html>

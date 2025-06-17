@@ -1,14 +1,16 @@
 <!-- navbar.html -->
 <nav class="navbar">
-  <div class="logo">FoodStudent</div>
-  <div class="nav-links">
-    <a href="index.html">Home</a>
-    <a href="menu.html">Menu</a>
-    <a href="orders.html">Orders</a>
-    <a href="profile.html">Profile</a>
+  <div class="navbar__logo">
+    <a href="/pages/index.html">FoodStudent</a>
+  </div>
+  <div class="navbar__links">
+    <a href="/pages/index.html" class="navbar__link">Home</a>
+    <a href="/pages/menu.html" class="navbar__link">Menu</a>
+    <a href="/pages/orders.html" class="navbar__link">Orders</a>
+    <a href="/pages/profile.html" class="navbar__link">Profile</a>
+    <a href="/pages/login.html" class="navbar__link" id="login-btn">Log In</a>
   </div>
 </nav>
-
 
 <style>
   .navbar {
@@ -18,45 +20,81 @@
     justify-content: space-between;
     align-items: center;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.8);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
   }
 
-  .logo {
+  .navbar__logo a {
     font-size: 1.8rem;
     font-weight: 700;
     color: #ff5722;
+    text-decoration: none;
+    transition: color 0.3s ease;
   }
 
-  .nav-links {
-    list-style: none;
+  .navbar__logo a:hover {
+    color: #ff8a50;
+  }
+
+  .navbar__links {
     display: flex;
-    gap: 1.2rem;
-    margin: 0;
-    padding: 0;
+    gap: 1.5rem;
+    align-items: center;
   }
 
-  .nav-links a {
+  .navbar__link {
     color: #eee;
     text-decoration: none;
     font-weight: 600;
-    transition: color 0.3s ease;
-    padding-bottom: 4px;
+    transition: all 0.3s ease;
+    padding: 0.5rem 0;
+    position: relative;
   }
 
-  .nav-links a:hover {
+  .navbar__link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: #ff5722;
+    transition: width 0.3s ease;
+  }
+
+  .navbar__link:hover {
     color: #ff5722;
   }
 
-  .nav-links a.active {
+  .navbar__link:hover::after {
+    width: 100%;
+  }
+
+  .navbar__link.active {
     color: #ff5722;
-    border-bottom: 2px solid #ff5722;
+  }
+
+  .navbar__link.active::after {
+    width: 100%;
+  }
+
+  @media (max-width: 768px) {
+    .navbar {
+      padding: 1rem;
+    }
+
+    .navbar__links {
+      gap: 1rem;
+    }
   }
 </style>
 
 <script>
-  // Set active link
-  const currentPage = window.location.pathname.split('/').pop();
-  document.querySelectorAll('.nav-links a').forEach(link => {
-    if (link.getAttribute('href') === currentPage) {
+  // Set active link based on current page
+  const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+  document.querySelectorAll('.navbar__link').forEach(link => {
+    if (link.getAttribute('href').includes(currentPage)) {
       link.classList.add('active');
     }
   });
@@ -67,13 +105,11 @@
 
   if (isLoggedIn) {
     authLink.textContent = 'Log Out';
-    authLink.onclick = () => {
+    authLink.onclick = (e) => {
+      e.preventDefault();
       localStorage.setItem('loggedIn', 'false');
       alert('You have logged out.');
       location.reload();
     };
-  } else {
-    authLink.href = 'login.html';
-    authLink.textContent = 'LogIn';
   }
 </script>
