@@ -38,10 +38,8 @@ npm install
    ```bash
    # If using MySQL Command Line:
    mysql -u root -p < database/schema.sql
-   
-   # If using MySQL Workbench:
-   # Open database/schema.sql and execute the script
    ```
+   Note: Replace 'root' with your MySQL username if different
 
 #### Step 3: Configure Database Connection
 1. Open `config/db.config.js`

@@ -119,7 +119,8 @@ app.use((err, req, res, next) => {
 });
 
 // Start server
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
     console.log(`Server running at http://localhost:${PORT}`);
+    console.log(`Network access: http://10.203.83.2:${PORT}`);
 });
 
