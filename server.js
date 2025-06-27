@@ -38,12 +38,14 @@ const userRoutes = require('./routes/user.routes');
 const restaurantRoutes = require('./routes/restaurant.routes');
 const menuItemRoutes = require('./routes/menuItem.routes');
 const orderRoutes = require('./routes/order.routes');
+const voucherRoutes = require('./routes/voucher.routes');
 
 // Use routes
 app.use('/api/users', userRoutes);
 app.use('/api/restaurants', restaurantRoutes);
 app.use('/api/menu-items', menuItemRoutes);
 app.use('/api/orders', orderRoutes);
+app.use('/api/vouchers', voucherRoutes);
 
 // Registration route
 app.post('/api/register', (req, res) => {

@@ -83,14 +83,13 @@ document.addEventListener('DOMContentLoaded', async function() {
         
         // Show cart notification
         const notification = document.getElementById('cart-notification');
-        notification.style.opacity = 1;
-        setTimeout(() => notification.style.opacity = 0, 2000);
-        
-        if (res.ok) {
-          alert('Order placed!');
-        } else {
-          alert('Failed to place order.');
+        if (notification) {
+          notification.style.opacity = 1;
+          setTimeout(() => notification.style.opacity = 0, 2000);
         }
+        
+        // Show toast notification for add to cart
+        showToast('Added to cart!');
       });
       menuGrid.appendChild(div);
     });
@@ -125,4 +124,30 @@ document.addEventListener('DOMContentLoaded', async function() {
       restaurantSection.style.display = 'block';
     });
   }
-}); 
+});
+
+// Add toast notification system
+function showToast(message, color = '#4caf50') {
+  let toast = document.getElementById('toast-notification');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'toast-notification';
+    toast.style.position = 'fixed';
+    toast.style.bottom = '32px';
+    toast.style.left = '50%';
+    toast.style.transform = 'translateX(-50%)';
+    toast.style.background = color;
+    toast.style.color = '#fff';
+    toast.style.padding = '1rem 2rem';
+    toast.style.borderRadius = '8px';
+    toast.style.fontWeight = '600';
+    toast.style.fontSize = '1.1rem';
+    toast.style.zIndex = '9999';
+    toast.style.boxShadow = '0 4px 16px rgba(0,0,0,0.18)';
+    document.body.appendChild(toast);
+  }
+  toast.textContent = message;
+  toast.style.background = color;
+  toast.style.display = 'block';
+  setTimeout(() => { toast.style.display = 'none'; }, 2000);
+} 

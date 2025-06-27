@@ -1130,7 +1130,15 @@
       });
 
     // Load user data
-    const user = JSON.parse(localStorage.getItem('user'));
+    let user = JSON.parse(localStorage.getItem('user'));
+    // Auto-fix: If user is missing id or role, try to restore from backup or force re-login
+    if (user && (!user.id || !user.role)) {
+      // Try to get from backup (e.g., username as id, or force re-login)
+      // If username exists, try to fetch user info from backend (not implemented here)
+      // For now, force re-login to restore correct user object
+      localStorage.removeItem('user');
+      window.location.href = 'login.html';
+    }
     if (user) {
       document.getElementById('profile-name').textContent = user.name;
       document.getElementById('profile-email').textContent = user.email;
@@ -1180,21 +1188,38 @@
     }
 
     // Show toast notification
-    function showToast(message) {
-      const toast = document.getElementById('toast');
-      const toastMessage = document.getElementById('toast-message');
-      toastMessage.textContent = message;
-      toast.classList.add('show');
-      setTimeout(() => {
-        toast.classList.remove('show');
-      }, 3000);
+    function showToast(message, color = '#4caf50') {
+      let toast = document.getElementById('toast-notification');
+      if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'toast-notification';
+        toast.style.position = 'fixed';
+        toast.style.bottom = '32px';
+        toast.style.left = '50%';
+        toast.style.transform = 'translateX(-50%)';
+        toast.style.background = color;
+        toast.style.color = '#fff';
+        toast.style.padding = '1rem 2rem';
+        toast.style.borderRadius = '8px';
+        toast.style.fontWeight = '600';
+        toast.style.fontSize = '1.1rem';
+        toast.style.zIndex = '9999';
+        toast.style.boxShadow = '0 4px 16px rgba(0,0,0,0.18)';
+        document.body.appendChild(toast);
+      }
+      toast.textContent = message;
+      toast.style.background = color;
+      toast.style.display = 'block';
+      setTimeout(() => { toast.style.display = 'none'; }, 2500);
     }
 
     // Profile form submission
     document.getElementById('profile-form').addEventListener('submit', function(e) {
       e.preventDefault();
+      const oldUser = JSON.parse(localStorage.getItem('user')) || {};
       const userData = {
-        name: document.getElementById('name').value,
+        ...oldUser,
+        name: document.getElementById('name').value || oldUser.name || oldUser.username || '',
         email: document.getElementById('email').value,
         phone: document.getElementById('phone').value
       };
@@ -1417,12 +1442,26 @@
       }
       if (confirmBtn) {
         confirmBtn.addEventListener('click', function() {
+          // Clear all user-related localStorage
           localStorage.removeItem('user');
+          localStorage.removeItem('loggedIn');
+          localStorage.removeItem('cart');
+          localStorage.removeItem('favorites');
+          localStorage.removeItem('addresses');
+          localStorage.removeItem('selectedVoucher');
+          showToast('Logged out successfully!');
           modal.style.display = 'none';
-          window.location.href = 'login.html';
+          setTimeout(() => {
+            window.location.href = 'login.html';
+          }, 1200);
         });
       }
     });
+
+    // Redirect to login if not logged in
+    if (!localStorage.getItem('user')) {
+      window.location.href = 'login.html';
+    }
   </script>
 </body>
 

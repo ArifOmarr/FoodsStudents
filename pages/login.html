@@ -236,6 +236,37 @@
       }
     });
 
+    // Add toast notification system
+    function showToast(message, color = '#4caf50') {
+      let toast = document.getElementById('toast-notification');
+      if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'toast-notification';
+        toast.style.position = 'fixed';
+        toast.style.bottom = '32px';
+        toast.style.left = '50%';
+        toast.style.transform = 'translateX(-50%)';
+        toast.style.background = color;
+        toast.style.color = '#fff';
+        toast.style.padding = '1rem 2rem';
+        toast.style.borderRadius = '8px';
+        toast.style.fontWeight = '600';
+        toast.style.fontSize = '1.1rem';
+        toast.style.zIndex = '9999';
+        toast.style.boxShadow = '0 4px 16px rgba(0,0,0,0.18)';
+        document.body.appendChild(toast);
+      }
+      toast.textContent = message;
+      toast.style.background = color;
+      toast.style.display = 'block';
+      setTimeout(() => { toast.style.display = 'none'; }, 2500);
+    }
+
+    // Redirect to profile if already logged in
+    if (localStorage.getItem('user')) {
+      window.location.href = 'profile.html';
+    }
+
     // Form submission
     form.addEventListener('submit', async function(event) {
       event.preventDefault();
@@ -277,19 +308,22 @@
         const result = await response.json();
 
         if (response.ok) {
-        // Store login state
-        localStorage.setItem('loggedIn', 'true');
+          // Store login state
+          localStorage.setItem('loggedIn', 'true');
           localStorage.setItem('user', JSON.stringify(result.user));
-
-        // Redirect to home page
-        window.location.href = 'index.html';
+          showToast('Login successful!');
+          setTimeout(() => {
+            window.location.href = 'profile.html';
+          }, 1200);
         } else {
           showError(emailError, result.message || 'Login failed');
+          showToast(result.message || 'Login failed', '#f44336');
           loginButton.disabled = false;
           loading.style.display = 'none';
         }
       } catch (error) {
         showError(emailError, 'Login failed. Please try again.');
+        showToast('Login failed. Please try again.', '#f44336');
         loginButton.disabled = false;
         loading.style.display = 'none';
       }

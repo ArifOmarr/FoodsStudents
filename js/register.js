@@ -22,7 +22,8 @@ document.getElementById('register-form').addEventListener('submit', async functi
       messageDiv.className = 'message success';
       messageDiv.style.display = 'block';
       // Store user in localStorage for auto-login
-      localStorage.setItem('user', JSON.stringify(result.user));
+      const userObj = { ...result.user, name: result.user.username };
+      localStorage.setItem('user', JSON.stringify(userObj));
       // Optionally, set loggedIn flag
       localStorage.setItem('loggedIn', 'true');
       // Show popup message

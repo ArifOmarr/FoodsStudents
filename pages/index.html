@@ -504,30 +504,13 @@
     <div class="voucher-section">
       <div class="section-header">
         <h2 class="section-title">Special Offers</h2>
-        <a href="orders.html#voucher-section" class="section-link" onclick="handleVoucherClick(event)">
+        <a href="orders.html#voucher-section" class="section-link" id="view-all-vouchers-link">
           View All
           <i class="fas fa-arrow-right"></i>
         </a>
       </div>
-      <div class="voucher-grid">
-        <div class="voucher-card">
-          <h3 class="voucher-card__title">Student Special</h3>
-          <p class="voucher-card__description">Get 15% off on your first order with your student ID</p>
-          <div class="voucher-card__code">STUDENT15</div>
-          <button class="voucher-card__claim" onclick="handleVoucherClaim('STUDENT15')">Claim Now</button>
-        </div>
-        <div class="voucher-card">
-          <h3 class="voucher-card__title">Free Delivery</h3>
-          <p class="voucher-card__description">Free delivery on orders above RM 25</p>
-          <div class="voucher-card__code">FREEDEL</div>
-          <button class="voucher-card__claim" onclick="handleVoucherClaim('FREEDEL')">Claim Now</button>
-        </div>
-        <div class="voucher-card">
-          <h3 class="voucher-card__title">Weekend Special</h3>
-          <p class="voucher-card__description">20% off on all orders during weekends</p>
-          <div class="voucher-card__code">WEEKEND20</div>
-          <button class="voucher-card__claim" onclick="handleVoucherClaim('WEEKEND20')">Claim Now</button>
-        </div>
+      <div class="voucher-grid" id="voucher-grid">
+        <!-- Vouchers will be dynamically added here -->
       </div>
     </div>
   </div>
@@ -593,19 +576,19 @@
         title: "Chicken Rice",
         description: "Delicious Hainanese chicken rice with special sauce",
         price: "RM 12.90",
-        image: "https://images.unsplash.com/photo-1603133872878-684f208fb84b?auto=format&fit=crop&w=400&q=80"
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQTUcqb9xfeCxJB0rlk0WxsJgEC28nn8G-nA&s"
       },
       {
         title: "Nasi Lemak",
         description: "Traditional Malaysian dish with fragrant rice",
         price: "RM 8.90",
-        image: "https://images.unsplash.com/photo-1603133872878-684f208fb84b?auto=format&fit=crop&w=400&q=80"
+        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Nasi_Lemak_dengan_Chili_Nasi_Lemak_dan_Sotong_Pedas%2C_di_Penang_Summer_Restaurant.jpg/960px-Nasi_Lemak_dengan_Chili_Nasi_Lemak_dan_Sotong_Pedas%2C_di_Penang_Summer_Restaurant.jpg"
       },
       {
         title: "Char Kuey Teow",
         description: "Stir-fried flat rice noodles with prawns and eggs",
         price: "RM 10.90",
-        image: "https://images.unsplash.com/photo-1603133872878-684f208fb84b?auto=format&fit=crop&w=400&q=80"
+        image: "https://www.marionskitchen.com/wp-content/uploads/2019/05/Char-Kway-Teow4-1200x1500.jpg"
       }
     ];
 
@@ -621,28 +604,45 @@
       </div>
     `).join('');
 
-    // Add these new functions
-    function handleVoucherClick(event) {
-      event.preventDefault();
-      const voucherCode = event.target.closest('.voucher-card')?.querySelector('.voucher-card__code')?.textContent;
-      if (voucherCode) {
-        localStorage.setItem('selectedVoucher', voucherCode);
+    // Fetch and render vouchers from backend
+    async function renderVouchers() {
+      const grid = document.getElementById('voucher-grid');
+      grid.innerHTML = '<div style="color:#aaa;text-align:center;width:100%;">Loading vouchers...</div>';
+      try {
+        const res = await fetch('/api/vouchers');
+        const data = await res.json();
+        if (!data.success || !Array.isArray(data.data)) throw new Error('No vouchers');
+        if (data.data.length === 0) {
+          grid.innerHTML = '<div style="color:#aaa;text-align:center;width:100%;">No vouchers available at the moment.</div>';
+          return;
+        }
+        grid.innerHTML = data.data.map(voucher => `
+          <div class="voucher-card">
+            <h3 class="voucher-card__title">${voucher.description}</h3>
+            <p class="voucher-card__description">${voucher.type === 'percentage' ? (voucher.discount * 100) + '% off' : 'RM ' + voucher.discount + ' off'}${voucher.minOrder ? ' on orders above RM ' + voucher.minOrder : ''}${voucher.weekendOnly ? ' (Weekend only)' : ''}</p>
+            <div class="voucher-card__code">${voucher.code}</div>
+            <button class="voucher-card__claim" data-code="${voucher.code}">Claim Now</button>
+          </div>
+        `).join('');
+        // Add claim event listeners
+        document.querySelectorAll('.voucher-card__claim').forEach(button => {
+          button.addEventListener('click', () => {
+            const code = button.getAttribute('data-code');
+            localStorage.setItem('selectedVoucher', code);
+            window.location.href = 'orders.html#voucher-section';
+          });
+        });
+      } catch (err) {
+        grid.innerHTML = '<div style="color:#f44336;text-align:center;width:100%;">Failed to load vouchers.</div>';
       }
-      window.location.href = 'orders.html#voucher-section';
     }
+    renderVouchers();
 
-    function handleVoucherClaim(code) {
-      localStorage.setItem('selectedVoucher', code);
+    // Update view all link to scroll to voucher section
+    document.getElementById('view-all-vouchers-link').onclick = function(e) {
+      e.preventDefault();
       window.location.href = 'orders.html#voucher-section';
-    }
-
-    // Update voucher claim functionality
-    document.querySelectorAll('.voucher-card__claim').forEach(button => {
-      button.addEventListener('click', () => {
-        const code = button.parentElement.querySelector('.voucher-card__code').textContent;
-        alert(`Voucher code ${code} has been copied to your clipboard!`);
-      });
-    });
+    };
   </script>
 </body>
 </html>

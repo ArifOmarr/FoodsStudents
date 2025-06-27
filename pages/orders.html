@@ -1037,27 +1037,6 @@
         localStorage.removeItem('selectedVoucher');
       }
 
-      // Voucher definitions
-      const vouchers = {
-        'STUDENT15': { code: 'STUDENT15', description: '15% off for students', discount: 0.15, type: 'percentage' },
-        'FREEDEL': { code: 'FREEDEL', description: 'Free delivery on orders above RM 25', discount: 5, type: 'fixed', minOrder: 25 },
-        'WEEKEND20': { code: 'WEEKEND20', description: '20% off on weekends', discount: 0.20, type: 'percentage', weekendOnly: true }
-      };
-
-      function validateVoucher(code, subtotal) {
-        const voucher = vouchers[code];
-        if (!voucher) return { valid: false, message: 'Invalid voucher code' };
-        if (voucher.weekendOnly) {
-          const today = new Date();
-          const isWeekend = today.getDay() === 0 || today.getDay() === 6;
-          if (!isWeekend) return { valid: false, message: 'This voucher is only valid on weekends' };
-        }
-        if (voucher.minOrder && subtotal < voucher.minOrder) {
-          return { valid: false, message: `Order must be at least RM ${voucher.minOrder} to use this voucher` };
-        }
-        return { valid: true, voucher };
-      }
-
       function getTotals(cart, voucher, orderType) {
         const subtotal = cart.reduce((sum, item) => sum + (Number(item.price) * item.quantity), 0);
         const deliveryFee = orderType === 'delivery' ? 5 : 0;
@@ -1115,7 +1094,7 @@
         } else if (method === 'bank') {
           return `
             <div class="form-group"><label>Select Bank</label>
-              <select><option value="">Select your bank</option><option>Maybank</option><option>CIMB</option><option>Public Bank</option><option>RHB</option></select>
+              <select id="bank-select"><option value="">Select your bank</option><option>Maybank</option><option>CIMB</option><option>Public Bank</option><option>RHB</option></select>
             </div>
           `;
         } else if (method === 'ewallet') {
@@ -1209,21 +1188,49 @@
         document.querySelectorAll('.payment-method').forEach(method => {
           method.addEventListener('click', () => {
             window.selectedPaymentMethod = method.dataset.method;
+            // Reset selectedBank if not bank
+            if (window.selectedPaymentMethod !== 'bank') window.selectedBank = '';
             renderCheckout();
           });
         });
 
+        // Bank selection event
+        if (selectedPaymentMethod === 'bank') {
+          const bankSelect = document.getElementById('bank-select');
+          if (bankSelect) {
+            bankSelect.value = window.selectedBank || '';
+            bankSelect.addEventListener('change', (e) => {
+              window.selectedBank = e.target.value;
+              renderCheckout();
+            });
+          }
+        }
+
         // Voucher apply
-        document.getElementById('apply-voucher-btn').onclick = () => {
+        document.getElementById('apply-voucher-btn').onclick = async () => {
           const code = document.getElementById('voucher-input').value.trim().toUpperCase();
           window.voucherInputValue = code;
-          const { valid, voucher, message } = validateVoucher(code, subtotal);
-          if (valid) {
-            window.appliedVoucher = voucher;
-            window.voucherError = '';
-          } else {
+          // Get subtotal and orderType
+          const subtotal = cart.reduce((sum, item) => sum + (Number(item.price) * item.quantity), 0);
+          try {
+            const response = await fetch('/api/vouchers/validate', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ code, subtotal, orderType })
+            });
+            const result = await response.json();
+            if (result.success) {
+              window.appliedVoucher = result.voucher;
+              window.voucherError = '';
+              showToast('Voucher applied!');
+            } else {
+              window.appliedVoucher = null;
+              window.voucherError = result.message || 'Invalid voucher';
+              showToast(window.voucherError, '#f44336');
+            }
+          } catch (err) {
             window.appliedVoucher = null;
-            window.voucherError = message;
+            window.voucherError = 'Error validating voucher';
           }
           renderCheckout();
         };
@@ -1237,6 +1244,12 @@
           }
           if (cart.length === 0) {
             window.orderFeedback = 'Your cart is empty.';
+            renderCheckout();
+            return;
+          }
+          // Validate bank selection if payment method is bank
+          if (selectedPaymentMethod === 'bank' && (!window.selectedBank || window.selectedBank === '')) {
+            window.orderFeedback = 'Please select your bank.';
             renderCheckout();
             return;
           }
@@ -1277,8 +1290,11 @@
             window.voucherError = '';
             window.voucherInputValue = '';
             window.selectedPaymentMethod = null;
+            window.selectedBank = '';
             window.isLoading = false;
             window.showModal = true;
+
+            showToast('Order placed successfully!');
 
             // Fetch and display updated orders
             try {
@@ -1296,6 +1312,22 @@
           }
         };
 
+        // Disable Place Order button if required fields are missing
+        const checkoutBtn = document.getElementById('checkout-btn');
+        let disableBtn = false;
+        if (!selectedPaymentMethod) disableBtn = true;
+        if (selectedPaymentMethod === 'bank' && (!window.selectedBank || window.selectedBank === '')) disableBtn = true;
+        if (cart.length === 0) disableBtn = true;
+        if (disableBtn) {
+          checkoutBtn.disabled = true;
+          checkoutBtn.style.opacity = 0.5;
+          checkoutBtn.style.pointerEvents = 'none';
+        } else {
+          checkoutBtn.disabled = false;
+          checkoutBtn.style.opacity = 1;
+          checkoutBtn.style.pointerEvents = 'auto';
+        }
+
         // Modal close
         if (showModal) {
           document.getElementById('close-modal-btn').onclick = () => {
@@ -1310,24 +1342,28 @@
     }
 
     function updateCartQuantity(itemId, change) {
-  let cart = JSON.parse(localStorage.getItem('cart')) || [];
-  const itemIndex = cart.findIndex(item => item.id === itemId);
-  if (itemIndex > -1) {
-    cart[itemIndex].quantity += change;
-    if (cart[itemIndex].quantity <= 0) {
-      cart.splice(itemIndex, 1);
+      let cart = JSON.parse(localStorage.getItem('cart')) || [];
+      const itemIndex = cart.findIndex(item => item.id === itemId);
+      if (itemIndex > -1) {
+        cart[itemIndex].quantity += change;
+        if (cart[itemIndex].quantity <= 0) {
+          cart.splice(itemIndex, 1);
+          showToast('Item removed from cart', '#f44336');
+        } else {
+          showToast('Cart updated');
+        }
+      }
+      localStorage.setItem('cart', JSON.stringify(cart));
+      renderCheckout();
     }
-  }
-  localStorage.setItem('cart', JSON.stringify(cart));
-  renderCheckout();
-}
 
-function removeCartItem(itemId) {
-  let cart = JSON.parse(localStorage.getItem('cart')) || [];
-  cart = cart.filter(item => item.id !== itemId);
-  localStorage.setItem('cart', JSON.stringify(cart));
-  renderCheckout();
-}
+    function removeCartItem(itemId) {
+      let cart = JSON.parse(localStorage.getItem('cart')) || [];
+      cart = cart.filter(item => item.id !== itemId);
+      localStorage.setItem('cart', JSON.stringify(cart));
+      showToast('Item removed from cart', '#f44336');
+      renderCheckout();
+    }
 
     document.addEventListener('DOMContentLoaded', async () => {
       console.log('Page loaded, initializing...');
@@ -1457,10 +1493,10 @@ function removeCartItem(itemId) {
           renderOrders(orders);
         }
 
-        alert('Order updated successfully!');
+        showToast('Order updated successfully!');
       } catch (error) {
         console.error('Error updating order:', error);
-        alert('Failed to update order. Please try again.');
+        showToast('Failed to update order', '#f44336');
       } finally {
         const saveBtn = document.getElementById('save-order-btn');
         saveBtn.disabled = false;
@@ -1493,10 +1529,10 @@ function removeCartItem(itemId) {
             renderOrders(orders);
           }
 
-          alert('Order cancelled successfully!');
+          showToast('Order cancelled successfully!');
         } catch (error) {
           console.error('Error cancelling order:', error);
-          alert('Failed to cancel order. Please try again.');
+          showToast('Failed to cancel order', '#f44336');
         }
       }
     }
@@ -1537,10 +1573,10 @@ function removeCartItem(itemId) {
           renderOrders(orders);
         }
 
-        alert('Order deleted successfully!');
+        showToast('Order deleted successfully!');
       } catch (error) {
         console.error('Error deleting order:', error);
-        alert('Failed to delete order. Please try again.');
+        showToast('Failed to delete order', '#f44336');
       } finally {
         const confirmBtn = document.getElementById('confirm-delete-btn');
         confirmBtn.disabled = false;
@@ -1573,6 +1609,32 @@ function removeCartItem(itemId) {
         }
       });
     });
+
+    // Add toast notification system
+    function showToast(message, color = '#4caf50') {
+      let toast = document.getElementById('toast-notification');
+      if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'toast-notification';
+        toast.style.position = 'fixed';
+        toast.style.bottom = '32px';
+        toast.style.left = '50%';
+        toast.style.transform = 'translateX(-50%)';
+        toast.style.background = color;
+        toast.style.color = '#fff';
+        toast.style.padding = '1rem 2rem';
+        toast.style.borderRadius = '8px';
+        toast.style.fontWeight = '600';
+        toast.style.fontSize = '1.1rem';
+        toast.style.zIndex = '9999';
+        toast.style.boxShadow = '0 4px 16px rgba(0,0,0,0.18)';
+        document.body.appendChild(toast);
+      }
+      toast.textContent = message;
+      toast.style.background = color;
+      toast.style.display = 'block';
+      setTimeout(() => { toast.style.display = 'none'; }, 2500);
+    }
   </script>
 </body>
 </html>
